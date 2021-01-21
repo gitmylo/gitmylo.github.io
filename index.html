@@ -29,14 +29,18 @@
   <nav>
     <div class="navbar">
       <div class="title">
-        <h1>Mylo's site</h1>
+        <h1>Mylo's project</h1>
       </div>
       <div class="links">
-        <a href="index.html">Home</a>
-        <a href="playground.html">Mylo's favs</a>
+        <a href="index.html">Refresh</a>
+        <a onclick="document.getElementById('home').style.display='block';document.getElementById('playground').style.display='none'">Home</a>
+        <a onclick="document.getElementById('playground').style.display='block';document.getElementById('home').style.display='none'">Mylo's favs</a>
       </div>
     </div>
   </nav>
+  <iframe loading="lazy" src="homepage.html" class="sitecontainer" id="home"></iframe>
+  <iframe loading="lazy" src="playground.html" class="sitecontainer" id="playground"></iframe>
+  <!--
   <div class="wrapper">
     <div class="containercontainer">
       <div onclick="window.open('https://twitter.com/cheemsdogger')" class="imgcaptioncontainer blue">
@@ -58,6 +62,7 @@
       </div>
     </div>
   </div>
+  -->
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
