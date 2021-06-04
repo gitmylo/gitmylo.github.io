@@ -143,11 +143,11 @@ nav{
 
   font-family: Roboto;
 }
-.navbar{
+.oldnavbar{
   display: flex;
   justify-content: space-between;
 }
-.wrapper{
+.oldwrapper{
   padding: 100px 50px;
 }
 
