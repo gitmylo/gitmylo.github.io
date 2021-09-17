@@ -1519,7 +1519,7 @@ window.particlesJS = function(tag_id, params){
 
 };
 
-particlesJS.load('particles-js', {
+particlesJS('particles-js', {
   "particles": {
     "number": {
       "value": 80,
