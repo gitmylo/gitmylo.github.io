@@ -1522,7 +1522,7 @@ window.particlesJS = function(tag_id, params){
 particlesJS('particles-js', {
   "particles": {
     "number": {
-      "value": 80,
+      "value": 160,
       "density": {
         "enable": true,
         "value_area": 800
