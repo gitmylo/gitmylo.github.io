@@ -1522,7 +1522,7 @@ window.particlesJS = function(tag_id, params){
 particlesJS('particles-js', {
   "particles": {
     "number": {
-      "value": 160,
+      "value": 109,
       "density": {
         "enable": true,
         "value_area": 800
@@ -1570,8 +1570,8 @@ particlesJS('particles-js', {
       "enable": true,
       "distance": 150,
       "color": "#ffffff",
-      "opacity": 0.4,
-      "width": 1
+      "opacity": 0.09167965461773755,
+      "width": 1.666902811231592
     },
     "move": {
       "enable": true,
@@ -1589,11 +1589,11 @@ particlesJS('particles-js', {
     }
   },
   "interactivity": {
-    "detect_on": "canvas",
+    "detect_on": "window",
     "events": {
       "onhover": {
-        "enable": false,
-        "mode": "repulse"
+        "enable": true,
+        "mode": "grab"
       },
       "onclick": {
         "enable": false,
@@ -1603,9 +1603,9 @@ particlesJS('particles-js', {
     },
     "modes": {
       "grab": {
-        "distance": 400,
+        "distance": 126.68918918918908,
         "line_linked": {
-          "opacity": 1
+          "opacity": 0.5050634753503342
         }
       },
       "bubble": {
