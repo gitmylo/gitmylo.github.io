@@ -1,74 +1,81 @@
 @font-face {
   font-family: "Roboto-Black";
-  src: url("/fonts/Roboto/Roboto-Black.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Black.ttf");
+}
 @font-face {
   font-family: "Roboto-BlackItalic";
-  src: url("/fonts/Roboto/Roboto-BlackItalic.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-BlackItalic.ttf");
+}
 @font-face {
   font-family: "Roboto-Bold";
-  src: url("/fonts/Roboto/Roboto-Bold.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Bold.ttf");
+}
 @font-face {
   font-family: "Roboto-BoldItalic";
-  src: url("/fonts/Roboto/Roboto-BoldItalic.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-BoldItalic.ttf");
+}
 @font-face {
   font-family: "Roboto-Italic";
-  src: url("/fonts/Roboto/Roboto-Italic.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Italic.ttf");
+}
 @font-face {
   font-family: "Roboto-Light";
-  src: url("/fonts/Roboto/Roboto-Light.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Light.ttf");
+}
 @font-face {
   font-family: "Roboto-LightItalic";
-  src: url("/fonts/Roboto/Roboto-LightItalic.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-LightItalic.ttf");
+}
 @font-face {
   font-family: "Roboto-Medium";
-  src: url("/fonts/Roboto/Roboto-Medium.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Medium.ttf");
+}
 @font-face {
   font-family: "Roboto-MediumItalic";
-  src: url("/fonts/Roboto/Roboto-MediumItalic.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-MediumItalic.ttf");
+}
 @font-face {
   font-family: "Roboto-Regular";
-  src: url("/fonts/Roboto/Roboto-Regular.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Regular.ttf");
+}
 @font-face {
   font-family: "Roboto-Thin";
-  src: url("/fonts/Roboto/Roboto-Thin.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-Thin.ttf");
+}
 @font-face {
   font-family: "Roboto-ThinItalic";
-  src: url("/fonts/Roboto/Roboto-ThinItalic.ttf"); }
-
+  src: url("/fonts/Roboto/Roboto-ThinItalic.ttf");
+}
 h1, h2, h3, h4, h5, h6, a, p, b, i, strong, em, mark, small, del, ins, sup, sub, label {
   font-family: Roboto-Regular;
   cursor: default;
-  user-select: none; }
+  user-select: none;
+  color: black;
+}
 
 a {
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  overflow: hidden; }
+  overflow: hidden;
+}
 
 a {
-  color: #00B7FF; }
+  color: #00B7FF;
+}
 
 .fullpagecontainer {
   margin: 0 0;
-  height: 100vh; }
+  height: 100vh;
+}
 
 .pagecontent {
   margin: 10px;
   height: calc(100vh - 50px);
-  overflow: auto; }
+  overflow: auto;
+}
 
 .headerbar {
   background: white;
@@ -78,7 +85,8 @@ a {
   height: 50px;
   display: flex;
   padding: 0 20px;
-  margin-bottom: -10px; }
+  margin-bottom: -10px;
+}
 
 .headerelement {
   margin-top: auto;
@@ -91,67 +99,83 @@ a {
   text-decoration: none;
   color: black;
   transition-duration: 0.1s;
-  transition-timing-function: ease-in-out; }
+  transition-timing-function: ease-in-out;
+}
 
 .headerelement:hover {
-  box-shadow: black 0px 0px 5px 1px; }
+  box-shadow: black 0px 0px 5px 1px;
+}
 
 .splitter {
   border-right: 1px solid black;
   border-left: 1px solid black;
   width: 5px;
   height: 30px;
-  margin-right: 10px; }
+  margin-right: 10px;
+}
 
 .headeritems {
   display: grid;
   grid-template-areas: "home projects about";
-  grid-gap: 10px; }
+  grid-gap: 10px;
+}
 
 .home {
-  grid-area: home; }
+  grid-area: home;
+}
 
 .projects {
-  grid-area: projects; }
+  grid-area: projects;
+}
 
 .about {
-  grid-area: about; }
+  grid-area: about;
+}
 
 .verticalcenter {
   margin-top: auto;
-  margin-bottom: auto; }
+  margin-bottom: auto;
+}
 
 .sitename {
-  margin-right: 10px; }
+  margin-right: 10px;
+}
 
 .requirecheckbox {
-  display: none; }
+  display: none;
+}
 
 input:checked ~ .requirecheckbox {
-  display: block; }
+  display: block;
+}
 
 .rightallign {
   position: absolute;
   right: 5px;
-  top: 15px; }
+  top: 15px;
+}
 
 li {
   list-style-type: none;
-  padding: 5px; }
+  padding: 5px;
+}
 
 li:before {
-  content: "- "; }
+  content: "- ";
+}
 
 a.tooltiphaver {
   text-decoration: none;
-  padding: 15px; }
+  padding: 15px;
+}
 
 .tooltip {
   cursor: default;
   user-select: none;
   display: inline;
   position: relative;
-  left: 10px; }
+  left: 10px;
+}
 
 a.tooltiphaver ~ .tooltip {
   color: black;
@@ -161,9 +185,11 @@ a.tooltiphaver ~ .tooltip {
   padding: 10px;
   border-radius: 100px;
   box-shadow: black 0 0 5px 0;
-  display: inline-block; }
+  display: inline-block;
+}
 
 a.tooltiphaver:hover ~ .tooltip {
-  opacity: 100%; }
+  opacity: 100%;
+}
 
 /*# sourceMappingURL=style.css.map */
