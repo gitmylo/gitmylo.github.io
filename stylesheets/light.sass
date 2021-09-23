@@ -1,0 +1,26 @@
+$maincolor: white
+$textcolor: black
+$shadowscolor: black
+
+h1, h2, h3, h4, h5, h6, a, p, b, i, strong, em, mark, small, del, ins, sup, sub, label, body, .headerelement
+  color: $textcolor
+
+div, body, header.headerbar
+  background: $maincolor
+
+header.headerbar
+  box-shadow: $shadowscolor 0px 0px 15px 2px
+
+.headerelement
+  box-shadow: $shadowscolor 0px 0px 5px 0px
+.headerelement:hover
+  box-shadow: $shadowscolor 0px 0px 5px 1px
+
+.splitter
+  border-right: 1px solid $shadowscolor
+  border-left: 1px solid $shadowscolor
+
+a.tooltiphaver ~ .tooltip
+  color: $textcolor
+  background: $maincolor
+  box-shadow: $shadowscolor 0 0 5px 0
