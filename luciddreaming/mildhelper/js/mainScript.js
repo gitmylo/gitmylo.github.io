@@ -3,10 +3,16 @@ const lines = [//The lines for the mantra
     "I am dreaming",
     "I will go to sleep and wake up lucid",
     "I will become lucid in my dreams",
-    "I will Lucid Dream tonight",
+    "I will lucid dream tonight",
     "I will realise i am dreaming",
     "I can lucid dream",
     "I will wake up in a dream",
+    "I will realise I'm dreaming",
+    "I lucid dream",
+    "I will lucid dream",
+    "I am aware of when I am dreaming",
+    "I can feel it when i'm dreaming",
+    "I know when i'm dreaming",
 ]
 
 const count = 7;
@@ -41,7 +47,14 @@ const notificationChecks = [
     "Remember to write down your dreams",
     "Anything is possible in your dreams",
     "You can always try again tomorrow",
-    "\"good night good luck\"",
+    "\"Good night Good luck\"",
+    "Try spawning a portal in your dream",
+    "Try creating a person behind you in your dream",
+    "How many fingers did i have again? 6?",
+    "Don't forget to stabilise your dreams",
+    "I keep flicking the switch but the lights wont turn off",
+    "My index finger just went through my palm",
+    "Ask your subconcious to highten your awareness in your next dreams",
 ]
 function getNotification(){
     return notificationChecks[Math.floor(Math.random()*notificationChecks.length)]
