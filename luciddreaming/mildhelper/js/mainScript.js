@@ -5,7 +5,8 @@ const lines = [//The lines for the mantra
     "I will become lucid in my dreams",
     "I will Lucid Dream tonight",
     "I will realise i am dreaming",
-
+    "I can lucid dream",
+    "I will wake up in a dream",
 ]
 
 const count = 7;
@@ -38,6 +39,9 @@ next()
 const notificationChecks = [
     "Remember to do reality checks",
     "Remember to write down your dreams",
+    "Anything is possible in your dreams",
+    "You can always try again tomorrow",
+    "\"good night good luck\"",
 ]
 function getNotification(){
     return notificationChecks[Math.floor(Math.random()*notificationChecks.length)]
