@@ -6,6 +6,41 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div class="settingsDrawer">
+    <div class="settingsarrow">></div>
+    <div class="settings">
+        <h1>Settings</h1>
+        <div class="settingsgroup settimer">
+            <h2>Timer</h2>
+            <div class="form-group">
+                Minutes:
+                <input type="number" id="minutes" value="10">
+            </div>
+
+            <button id="startTimer" onclick="setTimer(document.getElementById('minutes').value * 1000*60)">Start timer</button>
+            <button id="stopTimer" onclick="removeTimer()">Stop timer</button>
+            <div id="timerStatus" style="color: red">Stopped</div>
+        </div>
+        <div class="settingsgroup">
+            <h2>Delays</h2>
+            <div class="form-group">
+                Scroll delay (seconds):
+                <input type="number" id="scrolldelay" value="2">
+            </div>
+
+            <div class="form-group">
+                Hint delay (seconds):
+                <input type="number" id="hintDelay" value="10"><br>
+                Hint random (seconds):
+                <input type="number" id="hintRandomDelay" value="10"><br>
+                Hint duration (seconds):
+                <input type="number" id="hintDuration" value="3">
+            </div>
+
+            <button onclick="delay = document.getElementById('scrolldelay').value * 1000, hintDelay = document.getElementById('hintDelay').value * 1000, hintRandom = document.getElementById('hintRandomDelay').value * 1000, hintDuration = document.getElementById('hintDuration').value * 1000">Set delays</button>
+        </div>
+    </div>
+</div>
 <div id="pointer">></div>
 <div id="currentline" class="textcontainer"></div>
 <div id="nextup0" class="textcontainer nextup"></div>

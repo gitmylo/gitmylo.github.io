@@ -91,3 +91,64 @@ body{
     transition-duration: 1s;
     transition-timing-function: ease;
 }
+
+.settingsDrawer{
+    background: #3c3f41;
+
+    z-index: 9999;
+
+    position: absolute;
+    left: -450px;
+    top: 0;
+    width: 500px;
+    height: 100vh;
+    box-sizing: border-box;
+
+    overflow: auto;
+
+    transition-duration: 0.3s;
+
+    border-right: 0px solid black;
+}
+.settingsDrawer:hover{
+    left: 0;
+    border-right: 10px solid black;
+}
+.settingsDrawer .settingsarrow{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 50px;
+
+    text-shadow: 0 0 10px black;
+
+    transition-duration: 0.3s;
+
+    opacity: 10%;
+}
+.settingsDrawer:hover .settingsarrow{
+    transform: translateY(-50%) rotateY(180deg);
+    opacity: 75%;
+}
+.settings{
+    padding: 10px;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+}
+
+.settingsgroup{
+    padding: 10px;
+    border: 1px solid white;
+    margin-bottom: 30px;
+}
+.settingsgroup h2{
+    margin: 5px;
+}
+.form-group{
+    border: 1px solid white;
+    margin-bottom: 10px;
+    padding: 5px;
+}

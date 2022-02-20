@@ -15,6 +15,8 @@ const lines = [//The lines for the mantra
     "I know when i'm dreaming",
 ]
 
+var delay = 2000, hintDelay = 10000, hintRandom = 10000, hintDuration = 3000
+
 const count = 7;
 
 const currentLine = document.getElementById("currentline")
@@ -37,7 +39,7 @@ function next(){
         item.innerText = item2.innerText
     }
     items[items.length-1].innerText = randomLine()
-    setTimeout(next, 2000)
+    setTimeout(next, delay)
 }
 next()
 
@@ -62,11 +64,33 @@ function getNotification(){
 const notificationObj = document.getElementById('notification')
 function notification(){
     notificationObj.style.opacity = "0%"
-    setTimeout(notificationShow, 10000 + Math.floor(Math.random() * 10000))//min 10 seconds, max 20
+    setTimeout(notificationShow, hintDelay + Math.floor(Math.random() * hintRandom))
 }
 function notificationShow(){
     notificationObj.innerText = getNotification()
     notificationObj.style.opacity = "100%"
-    setTimeout(notification, 3000)
+    setTimeout(notification, hintDuration)
 }
 notification()
+
+const timerStatusObj = document.getElementById("timerStatus")
+let timer
+function removeTimer(){
+    if (timer) clearTimeout(timer)
+    timerStatus(false)
+}
+function setTimer(time){
+    timer = setTimeout(function () {
+        alert("Timer has expired")
+        removeTimer()
+    }, time)
+    timerStatus(true)
+}
+function toggleTimer(time){
+    if (timer) removeTimer()
+    else setTimer(time)
+}
+function timerStatus(running){
+    timerStatusObj.innerText = running?"Running":"Stopped"
+    timerStatusObj.style.color = running?"lawngreen":"red"
+}
