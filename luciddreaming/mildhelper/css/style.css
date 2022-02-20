@@ -112,7 +112,7 @@ body{
 }
 .settingsDrawer:hover{
     left: 0;
-    border-right: 10px solid black;
+    border-right: 2px solid black;
 }
 .settingsDrawer .settingsarrow{
     position: absolute;
