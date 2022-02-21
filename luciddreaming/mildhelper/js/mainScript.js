@@ -4,15 +4,16 @@ const lines = [//The lines for the mantra
     "I will go to sleep and wake up lucid",
     "I will become lucid in my dreams",
     "I will lucid dream tonight",
-    "I will realise i am dreaming",
+    "I will realise I am dreaming",
     "I can lucid dream",
     "I will wake up in a dream",
     "I will realise I'm dreaming",
     "I lucid dream",
     "I will lucid dream",
     "I am aware of when I am dreaming",
-    "I can feel it when i'm dreaming",
-    "I know when i'm dreaming",
+    "I can feel it when I'm dreaming",
+    "I know when I'm dreaming",
+    "Next time I will realise i'm dreaming",
 ]
 
 var delay = 2000, hintDelay = 10000, hintRandom = 10000, hintDuration = 3000
@@ -56,7 +57,7 @@ const notificationChecks = [
     "Don't forget to stabilise your dreams",
     "I keep flicking the switch but the lights wont turn off",
     "My index finger just went through my palm",
-    "Ask your subconcious to highten your awareness in your next dreams",
+    "Take your last dream, and think of all the dream signs",
 ]
 function getNotification(){
     return notificationChecks[Math.floor(Math.random()*notificationChecks.length)]
