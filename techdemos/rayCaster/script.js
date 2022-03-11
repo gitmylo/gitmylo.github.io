@@ -16,7 +16,7 @@ const count = 100 //ray count
  * The object containing pressed keys and mouse movements.
  *
  * New raw inputs get added with every key pressed.
- * @type    {{horizontal: number, rotation: number, raw: {}, vertical: number}}
+ * @type {{horizontal: number, rotation: number, raw: {}, vertical: number}}
  */
 let inputs = {
     horizontal: 0,
@@ -150,11 +150,11 @@ class Vector {
 class RayResult {
     /**
      * A result from a rayCast
-     * @param length How long the ray had to go
-     * @param wasX Did it hit on the x or the y axis
-     * @param startPos The ray's starting position
-     * @param endPos The ray's hitting position, or null if not hit before length
-     * @param hitTile The time the ray hit, or null of not hit before length
+     * @param length {number} How long the ray had to go
+     * @param wasX {boolean} Did it hit on the x or the y axis
+     * @param startPos {Vector} The ray's starting position
+     * @param endPos {Vector | null} The ray's hitting position, or null if not hit before length
+     * @param hitTile {any | null} The time the ray hit, or null of not hit before length
      */
     constructor(length, wasX, startPos, endPos, hitTile) {
         this.length = length
@@ -170,9 +170,9 @@ class RayResult {
  */
 /**
  * Send a ray and get a result back.
- * @param startVec The ray's starting position.
- * @param dirVec The direction and speed the ray travels with (speed affects performance).
- * @param maxlength The maximum distance a ray will attempt to travel (affects performance).
+ * @param startVec {Vector} The ray's starting position.
+ * @param dirVec {Vector} The direction and speed the ray travels with (speed affects performance).
+ * @param maxlength {number} The maximum distance a ray will attempt to travel (affects performance).
  * @returns {RayResult} the hit result of the ray being sent.
  */
 rayCast = (startVec, dirVec, maxlength) => {
@@ -209,9 +209,9 @@ checkPos = (pos) => {
  */
 setBar = (bar, rayResult) => {
     const barEl = bars[bar]
-    barEl.style.opacity = rayResult.hitTile ? '1' : '0';
-    barEl.style.height = `${100/rayResult.length}%`
-    barEl.style.background = rayResult.wasX ? "black" : "white";
+    barEl.style.opacity = rayResult.hitTile ? '1' : '0'
+    barEl.style.height = `${100/(rayResult.length)}%`
+    barEl.style.background = rayResult.wasX ? "black" : "white"
 }
 /**
  * Send all rays for rendering
@@ -222,7 +222,8 @@ sendRays = (fov) => {
         jump = fov / count
     for (let i = 0; i < count; i++) {
         const part = fovStart + jump * i,
-            dir = new Vector(0, 1).div(30).rotate(part)
+            dir = new Vector(0, 1).div(30).rotate(part),
+            angleOffset = Math.abs(player.angle - part)
         let result = rayCast(player.posToVec(), dir, 10)
         setBar(i, result)
     }
@@ -263,7 +264,7 @@ player.posToVec = () => {
  */
 const parent = document.getElementById('page')
 for (let i = 0; i < count; i++) {
-    parent.innerHTML += `<div style="left: ${100/count*i}vw;height: ${100*Math.random()}%;width: calc(${100/count}vw + 1px)" class="slide"></div>`
+    parent.innerHTML += `<div style="left: ${100/count*i}vw;height: 0%;width: calc(${100/count}vw + 1px)" class="slide"></div>`
 }
 
 /**
