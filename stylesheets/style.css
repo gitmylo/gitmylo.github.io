@@ -1,13 +1,14 @@
+/*noinspection CssUnknownTarget*/
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 body{
     background: #3c3f41;
     user-select: none;
     color: white;
-    font-family: Roboto;
+    font-family: Roboto, sans-serif;
     padding: 10px;
 }
-.dirlink{
+.dirLink{
     padding: 10px;
     margin: 3px;
     border: 1px solid black;
@@ -21,15 +22,15 @@ body{
 
     transition: 0.3s ease;
 }
-.dirlink:hover{
+.dirLink:hover{
     color: white;
     text-shadow: white 0 0 5px;
 }
-.dirlink:before{
+.dirLink:before{
     content: "\039e";
     margin-right: 5px;
 }
-.goback{
+.goBack{
     text-decoration: none;
     padding: 10px;
     margin: 3px;
@@ -37,18 +38,17 @@ body{
     border-radius: 10px;
 
     color: lightgray;
-    text-decoration: none;
     display: block;
 
     width: fit-content;
 
     transition: 0.3s ease;
 }
-.goback:before{
+.goBack:before{
     content: "←";
     margin-right: 5px;
 }
-.goback:hover{
+.goBack:hover{
     color: white;
     text-shadow: white 0 0 5px;
 }
@@ -67,13 +67,13 @@ body{
 .gray{
     color: gray;
 }
-.vsplitter{
+.vSplitter{
     width: 1px;
     height: 100%;
     background: black;
     display: inline-block;
 }
-.hsplitter{
+.hSplitter{
     width: 100%;
     height: 1px;
     background: black;
@@ -142,4 +142,7 @@ body{
 }
 .white{
     background: white !important;
+}
+.inline{
+    display: inline !important;
 }

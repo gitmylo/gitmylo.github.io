@@ -1,0 +1,29 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+.page{
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+}
+.slide{
+    position: absolute;
+    margin: 50vh 0 0 0;
+    transform: translateY(-50%);
+    background: black;
+    display: inline-block;
+}
+.debug {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background: black;
+    border: 1px solid white;
+    box-shadow: white 0 0 10px 2px;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 9999999;
+    width: 200px;
+}
