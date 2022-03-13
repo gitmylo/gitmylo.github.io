@@ -1,0 +1,108 @@
+@keyframes rotateCube1 {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg) rotateY(90deg) translate3d(0, 0, 50px);
+  }
+  100% {
+    transform: rotate3d(1, 5, 0, 360deg) rotateY(90deg) translate3d(0, 0, 50px);
+  }
+}
+div.side1 {
+  background: #35ea26;
+  transform: rotateY(90deg) translate3d(0, 0, 50px);
+  animation: rotateCube1 linear 4s infinite;
+  backface-visibility: hidden;
+}
+
+@keyframes rotateCube2 {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg) rotateY(180deg) translate3d(0, 0, 50px);
+  }
+  100% {
+    transform: rotate3d(1, 5, 0, 360deg) rotateY(180deg) translate3d(0, 0, 50px);
+  }
+}
+div.side2 {
+  background: #60458d;
+  transform: rotateY(180deg) translate3d(0, 0, 50px);
+  animation: rotateCube2 linear 4s infinite;
+  backface-visibility: hidden;
+}
+
+@keyframes rotateCube3 {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg) rotateY(270deg) translate3d(0, 0, 50px);
+  }
+  100% {
+    transform: rotate3d(1, 5, 0, 360deg) rotateY(270deg) translate3d(0, 0, 50px);
+  }
+}
+div.side3 {
+  background: #0486ee;
+  transform: rotateY(270deg) translate3d(0, 0, 50px);
+  animation: rotateCube3 linear 4s infinite;
+  backface-visibility: hidden;
+}
+
+@keyframes rotateCube4 {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg) rotateY(360deg) translate3d(0, 0, 50px);
+  }
+  100% {
+    transform: rotate3d(1, 5, 0, 360deg) rotateY(360deg) translate3d(0, 0, 50px);
+  }
+}
+div.side4 {
+  background: #dc0a69;
+  transform: rotateY(360deg) translate3d(0, 0, 50px);
+  animation: rotateCube4 linear 4s infinite;
+  backface-visibility: hidden;
+}
+
+@keyframes rotateCube5 {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg) rotateX(990deg) translate3d(0, 0, 50px);
+  }
+  100% {
+    transform: rotate3d(1, 5, 0, 360deg) rotateX(990deg) translate3d(0, 0, 50px);
+  }
+}
+div.side5 {
+  background: #0d0938;
+  transform: rotateX(990deg) translate3d(0, 0, 50px);
+  animation: rotateCube5 linear 4s infinite;
+  backface-visibility: hidden;
+}
+
+@keyframes rotateCube6 {
+  0% {
+    transform: rotate3d(0, 0, 0, 0deg) rotateX(1170deg) translate3d(0, 0, 50px);
+  }
+  100% {
+    transform: rotate3d(1, 5, 0, 360deg) rotateX(1170deg) translate3d(0, 0, 50px);
+  }
+}
+div.side6 {
+  background: #449a07;
+  transform: rotateX(1170deg) translate3d(0, 0, 50px);
+  animation: rotateCube6 linear 4s infinite;
+  backface-visibility: hidden;
+}
+
+.cube3d {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+}
+
+.cube3d div {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  left: calc(50% - 50px);
+  top: calc(50% - 50px);
+}
+
+/*# sourceMappingURL=style.css.map */

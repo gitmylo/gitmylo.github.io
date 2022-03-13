@@ -1,0 +1,38 @@
+@mixin random-bgr()
+  background: rgb(random(255), random(255), random(255))
+
+@for $i from 1 through 6
+  @keyframes rotateCube#{$i}
+    0%
+      @if($i <= 4)
+        transform: rotate3d(0, 0, 0, 0deg) rotateY($i*90deg) translate3d(0, 0, 50px)
+      @else
+        transform: rotate3d(0, 0, 0, 0deg) rotateX($i*180deg+90deg) translate3d(0, 0, 50px)
+    100%
+      @if($i <= 4)
+        transform: rotate3d(1, 5, 0, 360deg) rotateY($i*90deg) translate3d(0, 0, 50px)
+      @else
+        transform: rotate3d(1, 5, 0, 360deg) rotateX($i*180deg+90deg) translate3d(0, 0, 50px)
+  div.side#{$i}
+    @include random-bgr()
+    @if($i <= 4)
+      transform: rotateY($i*90deg) translate3d(0, 0, 50px)
+    @else
+      transform: rotateX($i*180deg+90deg) translate3d(0, 0, 50px)
+    animation: rotateCube#{$i} linear 4s infinite
+    backface-visibility: hidden
+
+.cube3d
+  position: absolute
+  width: 100vw
+  height: 100vh
+  left: 0
+  top: 0
+  box-sizing: border-box
+
+.cube3d div
+  width: 100px
+  height: 100px
+  position: absolute
+  left: calc(50% - 50px)
+  top: calc(50% - 50px)
