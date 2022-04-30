@@ -176,19 +176,37 @@ class RayResult {
  * @returns {RayResult} the hit result of the ray being sent.
  */
 rayCast = (startVec, dirVec, maxlength) => {
+    const backTraceVec = dirVec.mul(-0.02);
     // Create the marcher
-    let moveVec = startVec.clone(),
-        posRound, posContent
+    let moveVec = startVec.clone(), posContent
     while (startVec.dist(moveVec) <= maxlength) {
         // X
         moveVec.x += dirVec.x
         posContent = checkPos(moveVec)
-        if (posContent) return new RayResult(startVec.dist(moveVec), true, startVec, moveVec, posContent)
+        if (posContent) {
+            let lastPos = moveVec;
+            while(true) {
+                lastPos = moveVec;
+                moveVec = moveVec.add(backTraceVec);
+                if (!checkPos(moveVec)) {
+                    return new RayResult(startVec.dist(lastPos), true, startVec, lastPos, posContent)
+                }
+            }
+        }
 
         // Y
         moveVec.y += dirVec.y
         posContent = checkPos(moveVec)
-        if (posContent) return new RayResult(startVec.dist(moveVec), false, startVec, moveVec, posContent)
+        if (posContent) {
+            let lastPos = moveVec;
+            while(true) {
+                lastPos = moveVec;
+                moveVec = moveVec.add(backTraceVec);
+                if (!checkPos(moveVec)) {
+                    return new RayResult(startVec.dist(lastPos), false, startVec, lastPos, posContent)
+                }
+            }
+        }
     }
     // Didn't hit before length
     return new RayResult(maxlength, false, startVec, null, null)
@@ -222,7 +240,7 @@ sendRays = (fov) => {
         jump = fov / count
     for (let i = 0; i < count; i++) {
         const part = fovStart + jump * i,
-            dir = new Vector(0, 1).div(30).rotate(part),
+            dir = new Vector(0, 1).div(2).rotate(part),
             angleOffset = Math.abs(player.angle - part)
         let result = rayCast(player.posToVec(), dir, 10)
         setBar(i, result)
