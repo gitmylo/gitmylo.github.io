@@ -33,7 +33,8 @@ let player = {
     y: 2.5,
     angle: 0,// in radians, for easier use
     handleMovement: null,
-    posToVec: null
+    posToVec: null,
+    filter: true
 }
 /**
  * An array containing the map, used with numbers here,
@@ -184,12 +185,13 @@ rayCast = (startVec, dirVec, maxlength) => {
         moveVec.x += dirVec.x
         posContent = checkPos(moveVec)
         if (posContent) {
+            if (!player.filter) return new RayResult(startVec.dist(moveVec), true, startVec, moveVec, posContent);
             let lastPos = moveVec;
             while(true) {
                 lastPos = moveVec;
                 moveVec = moveVec.add(backTraceVec);
                 if (!checkPos(moveVec)) {
-                    return new RayResult(startVec.dist(lastPos), true, startVec, lastPos, posContent)
+                    return new RayResult(startVec.dist(lastPos), true, startVec, lastPos, posContent);
                 }
             }
         }
@@ -198,12 +200,13 @@ rayCast = (startVec, dirVec, maxlength) => {
         moveVec.y += dirVec.y
         posContent = checkPos(moveVec)
         if (posContent) {
+            if (!player.filter) return new RayResult(startVec.dist(moveVec), false, startVec, moveVec, posContent);
             let lastPos = moveVec;
             while(true) {
                 lastPos = moveVec;
                 moveVec = moveVec.add(backTraceVec);
                 if (!checkPos(moveVec)) {
-                    return new RayResult(startVec.dist(lastPos), false, startVec, lastPos, posContent)
+                    return new RayResult(startVec.dist(lastPos), false, startVec, lastPos, posContent);
                 }
             }
         }
@@ -301,6 +304,9 @@ document.body.addEventListener('pointermove', (e) => {
     if (document.pointerLockElement) inputs.rotation = e.movementX/100
 })
 document.body.addEventListener('keydown', (e) => {
+    if (e.key == "f") {
+        player.filter = !player.filter;
+    }
     inputs.raw[e.key] = true
 })
 document.body.addEventListener('keyup', (e) => {
@@ -344,8 +350,14 @@ const plXEl = document.getElementById('playerX'),
      * @type {HTMLElement}
      */
     plRotEl = document.getElementById('playerRot')
+/**
+ * The filter debug element.
+ * @type {HTMLElement}
+ */
+filterEl = document.getElementById('filter')
 setInterval(() => {
     plXEl.innerText = `${Math.round(player.x*100)/100}`
     plYEl.innerText = `${Math.round(player.y*100)/100}`
     plRotEl.innerText = `${Math.round(player.angle*100)/100} Rad`
+    filterEl.innerText = `${player.filter ? 'enabled':'disabled'}`
 },50)
