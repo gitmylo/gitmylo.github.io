@@ -49,4 +49,9 @@ a:before {
   content: "(link) ";
 }
 
+#startText {
+  margin-bottom: 10px;
+  width: calc(100% - 7px);
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -1,3 +1,6 @@
+let storedData;
+let lastInput;
+
 /**
  * @type {HTMLTextAreaElement}
  */
@@ -5,7 +8,11 @@ const input = document.getElementById('input'),
 /**
  * @type {HTMLTextAreaElement}
  */
-    output = document.getElementById('output');
+    output = document.getElementById('output'),
+/**
+ * @type {HTMLInputElement}
+ */
+    startText = document.getElementById('startText');
 
 class WordChance {
     /**
@@ -83,9 +90,10 @@ class ProcessResults {
 
 /**
  * Process to network
- * @param input {string}
+ * @param data {string}
  */
 function process(data) {
+    if (data === lastInput) return storedData;
     const split = data.split(' ');
     const results = new ProcessResults();
     results.startWord = split[0];
@@ -98,6 +106,7 @@ function process(data) {
         last = s;
     }
     results.endWord = last;
+    storedData = results;
     return results;
 }
 
@@ -134,6 +143,7 @@ function stringBias(inData, word) {
  * @returns {string}
  */
 function create(inData) {
+    inData.startWord = startText.value ?? inData.startWord;
     let generated = inData.startWord;
     const splitList = inData.startWord.split(' ');
     let word = splitList[splitList.length-1];
