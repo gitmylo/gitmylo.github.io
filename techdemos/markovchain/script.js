@@ -93,6 +93,7 @@ class ProcessResults {
  * @param data {string}
  */
 function process(data) {
+    data = " " + data;
     if (data === lastInput) return storedData;
     const split = data.split(' ');
     const results = new ProcessResults();
@@ -153,7 +154,7 @@ function create(inData) {
         word = stringBias_[Math.floor(Math.random()*stringBias_.length)];
         generated += ` ${word}`;
     }
-    return generated;
+    return generated.trim();
 }
 
 document.getElementById('generateButton').addEventListener('click', ev => {
