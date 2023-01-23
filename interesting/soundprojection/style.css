@@ -1,0 +1,32 @@
+#inputBox {
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+    background: #3c3f41;
+    border: 1px solid black;
+    color: white;
+}
+iframe {
+    border: 1px solid black;
+}
+input[type="number"] {
+    background: #3c3f41;
+    border: 1px solid black;
+    color: white;
+}
+button {
+    background: #3c3f41;
+    border: 1px solid black;
+    color: white;
+    padding: 10px;
+    border-radius: 999px;
+    box-shadow: black 0 0 20px 0;
+    transition: ease 60ms;
+}
+button:active {
+    box-shadow: black 0 0 5px 0;
+}
+.spacer {
+    display: inline-block;
+    width: 90px;
+}

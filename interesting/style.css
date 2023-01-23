@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body{
+    background: #3c3f41;
+    user-select: none;
+    color: white;
+    font-family: Roboto;
+    padding: 10px;
+    margin: 0;
+}
+table td{
+    border: 1px solid white;
+    padding: 5px;
+}
+table tr{
+    border-spacing: 20px 50px;
+}
+table{
+    border-spacing: 20px 5px;
+    width: 100%;
+}
+a{
+    color: lightgray;
+
+}
+tr.nostyle td{
+    border: none;
+    height: 10px;
+}
