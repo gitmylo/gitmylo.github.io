@@ -11,37 +11,37 @@
             }
         },
         {
-            regex: /^###### *(.*?)\r\n/gm,
+            regex: /^###### *(.*?)\r?\n/gm,
             process: r => {
                 return `<h6>${r[1]}</h6>`
             }
         },
         {
-            regex: /^##### *(.*?)\r\n/gm,
+            regex: /^##### *(.*?)\r?\n/gm,
             process: r => {
                 return `<h5>${r[1]}</h5>`
             }
         },
         {
-            regex: /^#### *(.*?)\r\n/gm,
+            regex: /^#### *(.*?)\r?\n/gm,
             process: r => {
                 return `<h4>${r[1]}</h4>`
             }
         },
         {
-            regex: /^### *(.*?)\r\n/gm,
+            regex: /^### *(.*?)\r?\n/gm,
             process: r => {
                 return `<h3>${r[1]}</h3>`
             }
         },
         {
-            regex: /^## *(.*?)\r\n/gm,
+            regex: /^## *(.*?)\r?\n/gm,
             process: r => {
                 return `<h2>${r[1]}</h2>`
             }
         },
         {
-            regex: /^# *(.*?)\r\n/gm,
+            regex: /^# *(.*?)\r?\n/gm,
             process: r => {
                 return `<h1>${r[1]}</h1>`
             }
@@ -59,13 +59,13 @@
             }
         },
         {
-            regex: /^>> *(.*?)\r\n/gm,
+            regex: /^>> *(.*?)\r?\n/gm,
             process: r => {
                 return `<div class="quote2">${r[1]}</div>`
             }
         },
         {
-            regex: /^> *(.*?)\r\n/gm,
+            regex: /^> *(.*?)\r?\n/gm,
             process: r => {
                 return `<div class="quote">${r[1]}</div>`
             }
@@ -77,7 +77,7 @@
             }
         },
         {
-            regex: /\r\n/gm,
+            regex: /\r?\n/gm,
             process: r => {
                 return `<br>`
             }
