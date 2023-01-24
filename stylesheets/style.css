@@ -62,6 +62,16 @@ body{
     position: absolute;
     left: 50%;
     bottom: 0;
+    width: 100vw;
+    text-align: center;
+    transform: translate(-50%, 0);
+}
+.top{
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 100vw;
+    text-align: center;
     transform: translate(-50%, 0);
 }
 .gray{

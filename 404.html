@@ -10,7 +10,23 @@
     <link rel="stylesheet" href="stylesheets/style.css">
 </head>
 <body>
+    <h1 class="top gray" id="fact"></h1>
     <h1 class="center">404: page not found</h1>
-    <h1 class="bottom gray">Are you lost too?</h1>
+    <h1 class="bottom gray" id="quote"></h1>
+
+    <script>
+        const quotes = ["Are you lost too?",
+            "Welcome to the other side",
+            "This page doesn't exist, stop looking",
+            "Nope, nothing here, nah ah",
+            "Please look away, nothing to see here"]
+        const facts = ["I have been a member of github since 2018",
+            "Check out the MSploit project if you're interested in pentesting",
+            "This text, as well as the text on the bottom of this page, change every refresh",
+            "I design all of my software myself, but some designs might be inspired by other software",
+            "I'm interested in software, hacking and neural networks"]
+        document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)]
+        document.getElementById("fact").innerText = facts[Math.floor(Math.random() * facts.length)]
+    </script>
 </body>
 </html>
