@@ -99,6 +99,11 @@
             title: "Music quotes",
             content: await loadContent("mq.1"),
             isHtml: false
+        },
+        {
+            title: "Wow",
+            content: await loadContent("pleaseletit.end"),
+            isHtml: false
         }
     ]
 
