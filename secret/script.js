@@ -5,12 +5,6 @@
      */
     const mmdProcessors = [
         {
-            regex: /\[(.*?)\]\((.*?)\)/gm,
-            process: r => {
-                return `<a href="${r[2]}">${r[1]}</a>`
-            }
-        },
-        {
             regex: /```\r?\n?(.*?)```/gms,
             process: r => {
                 return `<div class="code">${r[1]}</div>`
@@ -77,6 +71,12 @@
             }
         },
         {
+            regex: /\[(.*?)\]\((.*?)\)/gm,
+            process: r => {
+                return `<a target="_blank" href="${r[2]}">${r[1]}</a>`
+            }
+        },
+        {
             regex: /\r\n/gm,
             process: r => {
                 return `<br>`
@@ -94,12 +94,12 @@
             title: "Markdown test",
             content: await loadContent("mark.down"),
             isHtml: false
-        }/*,
+        },
         {
-            title: "Wall of text #1",
-            content: await loadContent("wot.1"),
+            title: "Music quotes",
+            content: await loadContent("mq.1"),
             isHtml: false
-        }*/
+        }
     ]
 
     async function loadContent(filename) {
@@ -125,7 +125,7 @@
         accordionContentEl.classList.add("accordionContent")
         if (accordion.isHtml) accordionContentEl.innerHTML = accordion.content
         else {
-            accordionContentEl.innerHTML = miniMarkDown(accordion.content)
+            accordionContentEl.innerHTML = miniMarkDown(decodeURI(accordion.content))
         }
         accordionEl.appendChild(accordionContentEl)
 
