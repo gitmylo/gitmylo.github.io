@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Encoder/Decoder by @gitMylo</title>
+  <link rel="stylesheet" href="../../stylesheets/normalise.css">
+  <link rel="stylesheet" href="../../stylesheets/style.css">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:title" content="Encoder/Decoder">
+</head>
+<body>
+  <div class="threegrid">
+    <textarea id="input" cols="30" rows="10" class="panel"></textarea>
+    <div class="panel">
+      <div class="pointers">
+        <div class="middle">v Mode</div>
+        <select name="mode" id="enDeCoderMode"></select>
+        <button class="generate" id="encodeButton">Encode</button>
+        <button class="generate" id="eecodeButton">Decode</button>
+        <div class="left"><- Input</div>
+        <div class="right">Output -></div>
+      </div>
+    </div>
+    <textarea id="output" cols="30" rows="10" class="panel"></textarea>
+  </div>
+  <script src="script.js" type="module"></script>
+</body>
+</html>

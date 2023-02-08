@@ -1,0 +1,63 @@
+.threegrid {
+    display: grid;
+    grid-template-columns: 1fr 200px 1fr;
+    grid-gap: 10px;
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+}
+
+textarea {
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 10px;
+    resize: none;
+    color: white;
+}
+
+.left {
+    left: 0;
+    text-align: left;
+}
+
+.right {
+    right: 0;
+    text-align: right;
+}
+
+.middle {
+    text-align: center;
+}
+
+.pointers {
+    width: 200px;
+    padding: 0 30px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
+}
+
+.generate {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+a {
+    color: lightgray;
+    text-decoration: none;
+}
+
+a:before {
+    content: "(link) ";
+}
+
+#startText {
+    margin-bottom: 10px;
+    width: calc(100% - 7px);
+}
+
+#enDeCoderMode {
+    width: 100%;
+    margin-bottom: 10px;
+}
