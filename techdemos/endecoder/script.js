@@ -8,12 +8,8 @@ const decodeButton = document.getElementById("eecodeButton")
 
 const endecoders = {
     "base64": {
-        encode: t => {
-            return btoa(t)
-        },
-        decode: t => {
-            return atob(t)
-        }
+        encode: btoa,
+        decode: atob
     },
     "uwucode": {
         encode: uwuEncode,
