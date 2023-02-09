@@ -1,4 +1,5 @@
 import {uwuEncode, uwuDecode} from './uwucode.js'
+import {keymashEncode, keymashDecode} from './keymash.js'
 
 const inputBox = document.getElementById("input")
 const outputBox = document.getElementById("output")
@@ -8,12 +9,19 @@ const decodeButton = document.getElementById("eecodeButton")
 
 const endecoders = {
     "base64": {
+        desc: "Base64 encoding",
         encode: btoa,
         decode: atob
     },
     "uwucode": {
+        desc: "Base16 (HEX) with characters that look like faces",
         encode: uwuEncode,
         decode: uwuDecode
+    },
+    "key mash": {
+        desc: "Base16 (HEX) with characters that look like keymashes",
+        encode: keymashEncode,
+        decode: keymashDecode
     }
 }
 
@@ -22,6 +30,7 @@ for (const endecoder in endecoders) {
     let el = document.createElement("option")
     el.value = endecoder
     el.innerText = endecoder
+    el.title = endecoders[endecoder].desc
     modeSelector.appendChild(el)
 }
 
