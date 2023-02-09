@@ -10,8 +10,8 @@ const decodeButton = document.getElementById("eecodeButton")
 const endecoders = {
     "base64": {
         desc: "Base64 encoding",
-        encode: btoa,
-        decode: atob
+        encode: s => btoa(s),
+        decode: s => atob(s)
     },
     "uwucode": {
         desc: "Base16 (HEX) with characters that look like faces",
