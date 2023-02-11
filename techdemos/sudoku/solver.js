@@ -86,8 +86,9 @@ function getOtherValues(index, input) {
     const values = []
     for (let i = 0; i < input.length; i++) {
         if (i === index || input[i] === 0) continue
-        const sp = getSquarePos(getCoordinates(i))
-        if ((sp.x === square.x && sp.y === square.y) || getCoordinates(i).x === x || getCoordinates(i).y === y) {
+        const c = getCoordinates(i)
+        const sp = getSquarePos(c)
+        if ((sp.x === square.x && sp.y === square.y) || c.x === x || c.y === y) {
             values.push(input[i])
         }
     }
@@ -120,9 +121,7 @@ function createComplexObject(input) {
  * @return {boolean}
  */
 function isFullySolved(input) {
-    for (const n of input) {
-        if (getOtherValues(n, input).includes(input[n])) return false
-    }
+    for (let i = 0; i < input.length; i++) if (getOtherValues(i, input).includes(input[i])) return false
     return !input.includes(0)
 }
 
@@ -138,23 +137,29 @@ function deepSolve(input, index, depth, arr) {
     let out = {"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1}
     if (depth > 0) for (const i of getOtherIndexes(index)) {
         if (arr[i] !== 0) continue
+        // Obtain a recursed deepSolve, containing the out with the allowed values
+        // Higher value means it's more likely to be useful
         const rec = deepSolve(input, i, depth-1, arr)
-        // Filtering
+        // Heuristic function
         for (const rr in rec) {
-            out[rr] /= rec[rr] * 10
+            out[rr] /= rec[rr]
         }
     }
+    // Allowed values
     const filtered = JSON.parse(JSON.stringify(input[index].allowedValues))//{"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1}
-    let penalty = 0
+    let reward = 0
+    // Make the "penalty" the same as the amount of allowed values
     for (const v in filtered) {
-        if (filtered[v] !== 0) ++penalty
+        if (filtered[v] !== 0) ++reward
     }
-    //valid slots will have a value of 1
-    for (const v in filtered) {
-        filtered[v] += out[v] + penalty
+    // Increase the value for each value by out (possibly modified) + penalty
+    for (const v in out) {
+        out[v] += filtered[v] + reward
     }
-    return filtered
+    // Return the increased value
+    return out
 }
+
 
 /**
  * @param input {number[]}
@@ -167,7 +172,7 @@ function step(input, depth) {
         if (input[i] !== 0) continue
         const complex = createComplexObject(input)
         const deep = deepSolve(complex, i, depth, input)
-        let highest = "0", highestVal = 0;
+        let highest = "0", highestVal = -Infinity;
         for (const num in deep) {
             if (deep[num] > highestVal) highest = num, highestVal = deep[num]
         }
