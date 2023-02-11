@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sudoku solver by @gitMylo</title>
+  <link rel="stylesheet" href="../../stylesheets/normalise.css">
+  <link rel="stylesheet" href="../../stylesheets/style.css">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:title" content="Sudoku solver">
+  <meta property="og:image" content="https://gitmylo.github.io/techdemos/sudoku/preview.png" />
+</head>
+<body>
+<div class="threegrid">
+  <textarea id="input" cols="30" rows="10" class="panel"></textarea>
+  <div class="panel">
+    <div class="pointers">
+      <div class="middle">This sudoku solver is based on the likelyness of something being a correct answer, and does not do any backtracking. It will be very slow when doing more than 2 depth</div>
+      <br>
+      <div class="middle">V depth</div>
+      <input type="number" name="steps" id="steps" value="1" min="0" max="10">
+      <button class="generate" id="solveButton">Solve</button>
+      <div class="left"><- Input</div>
+      <div class="right">Output -></div>
+    </div>
+  </div>
+  <textarea id="output" cols="30" rows="10" class="panel"></textarea>
+</div>
+<script src="script.js" type="module"></script>
+</body>
+</html>
