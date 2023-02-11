@@ -141,7 +141,7 @@ function deepSolve(input, index, depth, arr) {
         const rec = deepSolve(input, i, depth-1, arr)
         // Filtering
         for (const rr in rec) {
-            out[rr] /= rec[rr]
+            out[rr] /= rec[rr] * 10
         }
     }
     const filtered = JSON.parse(JSON.stringify(input[index].allowedValues))//{"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1}
