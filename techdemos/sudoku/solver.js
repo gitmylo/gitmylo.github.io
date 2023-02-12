@@ -189,9 +189,15 @@ function step(input, depth) {
         console.log(deep.index, deep.commonOption)
         if (deep.commonOption !== "0") input[deep.index] = parseInt(deep.commonOption)
     }*/
-    const deep = deeps.sort((a, b) => a.commonPercentage > b.commonPercentage ? 1 : -1)[0]
-    if (deep) {
-        if (deep.commonOption !== "0") input[deep.index] = parseInt(deep.commonOption)
+    const deepss = deeps.sort((a, b) => a.commonPercentage > b.commonPercentage ? 1 : -1)
+    for (let i = 0; i < deepss.length; i++) {
+        const deep = deepss[i]
+        if (deep) {
+            if (deep.commonOption !== "0" && !getOtherValues(deep.index, input).includes(Number.parseInt(deep.commonOption))){
+                input[deep.index] = parseInt(deep.commonOption)
+                break
+            }
+        }
     }
 }
 
