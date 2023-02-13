@@ -1,5 +1,6 @@
 import {uwuEncode, uwuDecode} from './uwucode.js'
 import {keymashEncode, keymashDecode} from './keymash.js'
+import {invisEncode, invisDecode} from "./invischars.js";
 
 const inputBox = document.getElementById("input")
 const outputBox = document.getElementById("output")
@@ -22,6 +23,11 @@ const endecoders = {
         desc: "Base16 (HEX) with characters that look like keymashes",
         encode: keymashEncode,
         decode: keymashDecode
+    },
+    "invisible characters": {
+        desc: "Base16 (HEX) with characters which are invisible in chats",
+        encode: invisEncode,
+        decode: invisDecode
     }
 }
 
