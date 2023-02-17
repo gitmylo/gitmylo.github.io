@@ -1,5 +1,23 @@
 import {Test, TestPage, ResultPage, TestButton} from "./testlib.js"
 
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
 class Symptom {
     /**
      * @param name {string}
@@ -45,7 +63,7 @@ class PsychTest {
 
     start(parentElement) {
         let nextPage = new ResultPage(this.name + " results. symptoms as (yours/minimum/total)", () => this.createResultHtml())
-        for (const symptom of this.symptoms.sort(() => Math.random() - 0.5)) {
+        for (const symptom of shuffle(this.symptoms)) {
             let description = symptom.description
             if (symptom.examples.length > 0) {
                 description += "<br><br>Examples:<ul>"
