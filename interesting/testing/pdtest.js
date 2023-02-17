@@ -12,7 +12,7 @@ const jealousSuspicious = new Symptom("I often believe my intimate partners are 
 
 // SzPD
 const dislikeRelationships = new Symptom("I don't want nor enjoy close relationships.")
-const independentactivities = new Symptom("I almost always choose independent activities.")
+const independentactivities = new Symptom("I almost always choose independent activities over activities i can do together.")
 const noSexualInterest = new Symptom("I have little to no interest in becoming sexually active with another person.")
 const noPleasure = new Symptom("I don't enjoy many or all activities.")
 const lackCloseFriends = new Symptom("I lack close friends other than immediate relatives (family members).")
