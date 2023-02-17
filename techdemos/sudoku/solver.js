@@ -140,9 +140,15 @@ function deepSolve(input, index, depth, arr) {
         // Obtain a recursed deepSolve, containing the out with the allowed values
         // Higher value means it's more likely to be useful
         const rec = deepSolve(input, i, depth-1, arr)
+        let possibleOptions = 0
+        for (const rr in rec) {
+            if (rec[rr] !== 0){
+                possibleOptions++
+            }
+        }
         // Heuristic function
         for (const rr in rec) {
-            out[rr] /= rec[rr]
+            out[rr] /= rec[rr] + possibleOptions
         }
     }
     // Allowed values
@@ -201,11 +207,20 @@ function step(input, depth) {
     }
 }
 
+function getModes() {
+    return [
+        {
+            name: "statistics",
+            description: "Calculate using a statistical algorithm"
+        }
+    ]
+}
+
 /**
  * @param input {string}
  * @param depth {number}
  */
-function solve(input, depth) {
+function solve(input, depth, method) {
     input = processInput(input)
     if (input.length !== 81) return "Wrong sudoku format, not 81 characters"
     let array = []
@@ -214,12 +229,16 @@ function solve(input, depth) {
         else array.push(Number.parseInt(char))
     }
 
-    for (let i = 0; i < 100; i++) {
-        step(array, depth)
-        if (isFullySolved(array)) break
+    switch (method) {
+        case "statistics":
+            for (let i = 0; i < 100; i++) {
+                step(array, depth)
+                if (isFullySolved(array)) break
+            }
+            break
     }
 
     return `${arrayToOutput(array)}\nCorrectly solved: ${isFullySolved(array)}`
 }
 
-export {solve}
+export {solve, getModes}
