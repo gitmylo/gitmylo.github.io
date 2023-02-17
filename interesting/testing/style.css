@@ -1,0 +1,35 @@
+.fillparent {
+    position: absolute;
+    left: 0;
+    right: 0;
+    /*top: 0;
+    bottom: 0;*/
+    background: #222425;
+    padding: 40px;
+    border-radius: 50px;
+    overflow-y: auto;
+}
+
+.fillparent h1 {
+    text-align: center;
+}
+
+.container {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    bottom: 10%;
+}
+
+.middle {
+    text-align: center;
+}
+
+a.button {
+    border: 1px solid grey;
+    border-radius: 10px;
+    padding: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
