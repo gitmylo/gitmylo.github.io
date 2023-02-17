@@ -62,7 +62,7 @@ class PsychTest {
     }
 
     start(parentElement) {
-        let nextPage = new ResultPage(this.name + " results. symptoms as (yours/minimum/total)", () => this.createResultHtml())
+        let nextPage = new ResultPage("\"" + this.name + "\" results. symptoms as (yours/minimum/total)", () => this.createResultHtml())
         for (const symptom of shuffle(this.symptoms)) {
             let description = symptom.description
             if (symptom.examples.length > 0) {
