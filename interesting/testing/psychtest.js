@@ -46,11 +46,14 @@ class PsychTest {
     start(parentElement) {
         let nextPage = new ResultPage(this.name + " results. symptoms as (yours/minimum/total)", () => this.createResultHtml())
         for (const symptom of this.symptoms.sort(() => Math.random() - 0.5)) {
-            let description = symptom.description + "<br><br>Examples:<ul>"
-            for (const example of symptom.examples) {
-                description += `<li>${example}</li>`
+            let description = symptom.description
+            if (symptom.examples.length > 0) {
+                description += "<br><br>Examples:<ul>"
+                for (const example of symptom.examples) {
+                    description += `<li>${example}</li>`
+                }
+                description += "</ul>"
             }
-            description += "</ul>"
             const followingPage = nextPage
             nextPage = new TestPage(symptom.name, description, [
                 new TestButton("I do have this symptom", "I do have this symptom", e => {
