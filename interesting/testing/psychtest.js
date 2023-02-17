@@ -74,11 +74,11 @@ class PsychTest {
             }
             const followingPage = nextPage
             nextPage = new TestPage(symptom.name, description, [
-                new TestButton("I do have this symptom", "I do have this symptom", e => {
+                new TestButton("Confirm", "Confirm", e => {
                     this.confirmedSymptoms.push(symptom)
                     followingPage.displayPage(parentElement)
                 }),
-                new TestButton("I do NOT have this symptom", "I do NOT have this symptom", e => {
+                new TestButton("Deny", "Deny", e => {
                     followingPage.displayPage(parentElement)
                 })
             ])
