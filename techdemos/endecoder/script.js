@@ -3,7 +3,7 @@ import {keymashEncode, keymashDecode} from './encoders/goofy/keymash.js'
 import {invisEncode, invisDecode} from "./encoders/goofy/invischars.js"
 import {hexEncode, hexDecode} from "./encoders/normal/base16.js"
 import {binaryEncode, binaryDecode} from "./encoders/normal/base2.js"
-import {aggressiveUrlEncode} from "./encoders/normal/aggressiveUrl.js"
+import {aggressiveUrlEncode, aggressiveUrlEncodeNonDestructive} from "./encoders/normal/aggressiveUrl.js"
 
 
 const inputBox = document.getElementById("input")
@@ -15,13 +15,18 @@ const decodeButton = document.getElementById("eecodeButton")
 const endecoders = {
     "url": {
         desc: "Url encoding",
-        encode: s => encodeURIComponent(s),
-        decode: s => decodeURIComponent(s)
+        encode: encodeURIComponent,
+        decode: decodeURIComponent
     },
     "url (aggressive)": {
         desc: "Aggressive url encoding, which encodes every single character",
-        encode: s => aggressiveUrlEncode(s),
-        decode: s => decodeURI(s)
+        encode: aggressiveUrlEncode,
+        decode: decodeURI
+    },
+    "url (reverse pattern)": {
+        desc: "Url encoding, keeps url valid but hard to read",
+        encode: aggressiveUrlEncodeNonDestructive,
+        decode: decodeURI
     },
     "base64": {
         desc: "Base64 encoding",
