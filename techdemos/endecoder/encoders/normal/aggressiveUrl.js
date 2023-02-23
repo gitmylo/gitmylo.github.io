@@ -7,12 +7,13 @@ function aggressiveUrlEncode(str) {
     return result.toUpperCase()
 }
 
-const ignoreChars = ["/", ":", "?", "&", "+", "="]
+const ignoreChars = ["/", "?", "&", "+", "="]
 
 function aggressiveUrlEncodeNonDestructive(str) {
     let hold = ""
     let skip = 0
-    if (str.indexOf("://") !== -1) {
+    let portCurrently = false
+    if (str.indexOf("://") !== -1) { // protocol detection
         const location = str.indexOf("://")
         hold = str.substring(0, location)
         str = str.substring(location)
@@ -21,11 +22,25 @@ function aggressiveUrlEncodeNonDestructive(str) {
     let result = ''
     for (let i = 0; i < str.length; i++) {
         const charHere = str.charAt(i)
-        if (charHere === "%") skip = 2
+        if (charHere === "%") skip = 2 // prevent double encoding
+        if (charHere === ":") {
+            portCurrently = true
+            result += charHere
+            continue
+        }
         if (skip >= 0) {
             result += charHere
             --skip
             continue
+        }
+        if (portCurrently) {
+            if (!"0123456789".includes(charHere)) {
+                portCurrently = false
+            }
+            else {
+                result += charHere
+                continue
+            }
         }
         if (ignoreChars.includes(charHere)) {
             result += charHere
