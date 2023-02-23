@@ -10,7 +10,7 @@ const inputBox = document.getElementById("input")
 const outputBox = document.getElementById("output")
 const modeSelector = document.getElementById("enDeCoderMode")
 const encodeButton = document.getElementById("encodeButton")
-const decodeButton = document.getElementById("eecodeButton")
+const decodeButton = document.getElementById("decodeButton")
 
 const endecoders = {
     "url": {
