@@ -1,29 +1,5 @@
-function hexEncode(str) {
-    let result = ''
-    for (let i = 0; i < str.length; i++) {
-        let hex = str.charCodeAt(i).toString(16)
-        result += hex.padStart(2, '0')
-    }
-    return result.toUpperCase()
-}
-
-function hexDecode(hex) {
-    hex = hex.toLowerCase()
-    let result = ''
-    for (let i = 0; i < hex.length; i += 2) {
-        let charCode = parseInt(hex.substr(i, 2), 16)
-        result += String.fromCharCode(charCode)
-    }
-    return result
-}
-
-function objectFlip(obj) {
-    const ret = {}
-    Object.keys(obj).forEach(key => {
-        ret[obj[key]] = key
-    })
-    return ret
-}
+import {hexEncode, hexDecode} from "../normal/base16.js"
+import {objectFlip} from "../../utils.js"
 
 const encodeLookUpTable = {
     "0": "","1": "","2": "","3": "","4": "","5": "",

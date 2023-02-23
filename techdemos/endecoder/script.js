@@ -1,6 +1,10 @@
-import {uwuEncode, uwuDecode} from './uwucode.js'
-import {keymashEncode, keymashDecode} from './keymash.js'
-import {invisEncode, invisDecode} from "./invischars.js";
+import {uwuEncode, uwuDecode} from './encoders/goofy/uwucode.js'
+import {keymashEncode, keymashDecode} from './encoders/goofy/keymash.js'
+import {invisEncode, invisDecode} from "./encoders/goofy/invischars.js"
+import {hexEncode, hexDecode} from "./encoders/normal/base16.js"
+import {binaryEncode, binaryDecode} from "./encoders/normal/base2.js"
+import {aggressiveUrlEncode} from "./encoders/normal/aggressiveUrl.js"
+
 
 const inputBox = document.getElementById("input")
 const outputBox = document.getElementById("output")
@@ -9,10 +13,30 @@ const encodeButton = document.getElementById("encodeButton")
 const decodeButton = document.getElementById("eecodeButton")
 
 const endecoders = {
+    "url": {
+        desc: "Url encoding",
+        encode: s => encodeURIComponent(s),
+        decode: s => decodeURIComponent(s)
+    },
+    "url (aggressive)": {
+        desc: "Aggressive url encoding, which encodes every single character",
+        encode: s => aggressiveUrlEncode(s),
+        decode: s => decodeURI(s)
+    },
     "base64": {
         desc: "Base64 encoding",
         encode: s => btoa(s),
         decode: s => atob(s)
+    },
+    "base16 (HEX)": {
+        desc: "Base16 (HEX) encoding",
+        encode: hexEncode,
+        decode: hexDecode
+    },
+    "base2 (Binary)": {
+        desc: "Base2 (Binary) encoding",
+        encode: binaryEncode,
+        decode: binaryDecode
     },
     "uwucode": {
         desc: "Base16 (HEX) with characters that look like faces",
@@ -49,12 +73,12 @@ function changeMode() {
     decodeButton.disabled = getCurrentmode().decode === undefined
 }
 
-encodeButton.addEventListener("click", e => {
+encodeButton.addEventListener("click", () => {
     outputBox.value = getCurrentmode().encode(inputBox.value)
 })
-decodeButton.addEventListener("click", e => {
+decodeButton.addEventListener("click", () => {
     outputBox.value = getCurrentmode().decode(inputBox.value)
 })
 
-modeSelector.addEventListener("change", e => changeMode())
+modeSelector.addEventListener("change", () => changeMode())
 changeMode()
