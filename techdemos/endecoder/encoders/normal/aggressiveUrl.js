@@ -11,14 +11,10 @@ const ignoreChars = ["/", ".", ":", "?", "&", "+", "="]
 
 function aggressiveUrlEncodeNonDestructive(str) {
     let hold = ""
-
-    if (str.startsWith("https")) {
-        hold = "https"
-        str = str.substring(5)
-    }
-    if (str.startsWith("http")) {
-        hold = "http"
-        str = str.substring(4)
+    if (str.indexOf("://") !== -1) {
+        const location = str.indexOf("://")
+        hold = str.substring(0, location)
+        str = str.substring(location)
     }
 
     let result = ''
@@ -27,7 +23,6 @@ function aggressiveUrlEncodeNonDestructive(str) {
             result += str.charAt(i)
             continue
         }
-        console.log(str.charAt(i))
         let hex = str.charCodeAt(i).toString(16)
         result += "%" + hex.padStart(2, '0')
     }
