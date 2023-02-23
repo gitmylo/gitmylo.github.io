@@ -7,7 +7,7 @@ function aggressiveUrlEncode(str) {
     return result.toUpperCase()
 }
 
-const ignoreChars = ["/", ".", ":", "?", "&", "+", "="]
+const ignoreChars = ["/", ":", "?", "&", "+", "="]
 
 function aggressiveUrlEncodeNonDestructive(str) {
     let hold = ""
