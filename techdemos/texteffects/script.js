@@ -1,6 +1,6 @@
-import {randomCase} from "./effects/randomcasing.js"
-import {wordcount} from "./effects/wordcount.js"
-
+import {randomCase, settings as caseSettings} from "./effects/fun/randomcasing.js"
+import {replaceProcess, settings as replaceSettings} from "./effects/general/replace.js"
+import {wordcount} from "./effects/general/wordcount.js"
 
 const inputBox = document.getElementById("input")
 const outputBox = document.getElementById("output")
@@ -11,13 +11,47 @@ const settingsButton = document.getElementById("settingsButton")
 
 const effects = {
     "general": {
-        "random case": {
-            desc: "Random upper/lower case",
-            apply: randomCase
+        "reverse": {
+            desc: "Reverses text",
+            apply: t => t.split("").reverse().join("")
+        },
+        "replace text": {
+            desc: "Replace text, using regex",
+            apply: replaceProcess,
+            settings: replaceSettings
         },
         "word count": {
             desc: "Count words, lines and characters",
             apply: wordcount
+        }
+    },
+    "fun": {
+        "random case": {
+            desc: "Random upper/lower case",
+            apply: randomCase,
+            settings: caseSettings
+        },
+        "pig latin": {
+            desc: "a language game where the first letter of each word is moved to the end of the word and \"ay\" is added",
+            apply: t => {
+                let out = ""
+                let firstChar = ""
+                let allowedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                for (const char of t.split("")) {
+                    const currentAllowed = allowedChars.includes(char)
+                    if (!currentAllowed && firstChar !== "") {
+                        out += `${firstChar}ay`
+                        firstChar = ""
+                    }
+                    if (firstChar === "" && currentAllowed) {
+                        firstChar = char
+                    }
+                    else {
+                        out += char
+                    }
+                }
+                return out
+            }
         }
     }
 }
@@ -41,7 +75,7 @@ function loadModes() {
         let el = document.createElement("option")
         el.value = effect
         el.innerText = effect
-        el.title = effect.desc
+        el.title = getCurrentCategory()[effect].desc
         modeSelector.appendChild(el)
     }
     changeMode()

@@ -6,8 +6,9 @@ class Setting {
      * @param max {number}
      * @param step {number}
      */
-    constructor(name = "", value = "", min = 0, max = Number.MAX_VALUE, step = 1) {
+    constructor(name = "", description = "", value = "", min = 0, max = Number.MAX_VALUE, step = 1) {
         this.name = name
+        this.description = description
         this.value = value
         this.min = min
         this.max = max
@@ -30,6 +31,7 @@ class Setting {
         switch (this.settingType) {
             case 0:
                 const cbel = document.createElement("li")
+                cbel.title = this.description
                 const checkbox = document.createElement("input")
                 checkbox.type = "checkbox"
                 checkbox.value = this.value
@@ -39,6 +41,7 @@ class Setting {
                 return cbel
             case 1:
                 const strel = document.createElement("li")
+                strel.title = this.description
                 const strdiv = document.createElement("div")
                 strdiv.innerText = `${this.name}:`
                 strel.appendChild(strdiv)
@@ -49,6 +52,7 @@ class Setting {
                 return strel
             case 2:
                 const numel = document.createElement("li")
+                numel.title = this.description
                 const numdiv = document.createElement("div")
                 numdiv.innerText = `${this.name}:`
                 numel.appendChild(numdiv)
