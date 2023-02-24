@@ -12,7 +12,11 @@ const input = document.getElementById('input'),
 /**
  * @type {HTMLInputElement}
  */
-    startText = document.getElementById('startText');
+    startText = document.getElementById('startText'),
+/**
+ * @type {HTMLInputElement}
+ */
+    liveGen = document.getElementById("liveGen");
 
 class WordChance {
     /**
@@ -138,25 +142,47 @@ function stringBias(inData, word) {
     return results;
 }
 
+let newestRunID = 0
+
 /**
  *
  * @param inData {ProcessResults}
+ * @param outputLive {boolean}
+ * @param liveOutput {HTMLTextAreaElement}
  * @returns {string}
  */
-function create(inData) {
+function create(inData, outputLive = false, liveOutput = null) {
+    let currentRunID = newestRunID;
     inData.startWord = startText.value ?? inData.startWord;
     let generated = inData.startWord;
     const splitList = inData.startWord.split(' ');
     let word = splitList[splitList.length-1];
-    while (word != inData.endWord)
-    {
-        const stringBias_ = stringBias(inData, word);
-        word = stringBias_[Math.floor(Math.random()*stringBias_.length)];
-        generated += ` ${word}`;
+    if (outputLive) {
+        const nextStep = () => {
+            word = nextWord(inData, word);
+            generated += ` ${word}`;
+            liveOutput.value = generated;
+            liveOutput.scrollTop = liveOutput.scrollHeight
+            if (word !== inData.endWord && currentRunID === newestRunID && liveGen.checked) setTimeout(nextStep, 0);
+        }
+        nextStep()
+    }
+    else {
+        while (word !== inData.endWord)
+        {
+            word = nextWord(inData, word)
+            generated += ` ${word}`;
+        }
     }
     return generated.trim();
 }
 
+function nextWord(inData, currentWord) {
+    const stringBias_ = stringBias(inData, currentWord);
+    return stringBias_[Math.floor(Math.random()*stringBias_.length)];
+}
+
 document.getElementById('generateButton').addEventListener('click', ev => {
-    output.value = create(process(input.value));
+    ++newestRunID;
+    output.value = create(process(input.value), liveGen.checked, output);
 });
