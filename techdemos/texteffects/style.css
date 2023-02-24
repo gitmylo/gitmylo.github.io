@@ -103,7 +103,7 @@ a:before {
     display: none;
 }
 
-li input[type="number"], li textarea {
+li textarea, li input:not([type="checkbox"]), li select {
     width: 100%;
     background: #3c3f41;
     border: 1px solid black;

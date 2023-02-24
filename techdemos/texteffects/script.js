@@ -1,5 +1,7 @@
 import {randomCase, settings as caseSettings} from "./effects/fun/randomcasing.js"
+import {shuffle, settings as shuffleSettings} from "./effects/fun/shuffle.js";
 import {replaceProcess, settings as replaceSettings} from "./effects/general/replace.js"
+import {hash, settings as hashSettings} from "./effects/general/hash.js"
 import {wordcount} from "./effects/general/wordcount.js"
 
 const inputBox = document.getElementById("input")
@@ -23,6 +25,11 @@ const effects = {
         "word count": {
             desc: "Count words, lines and characters",
             apply: wordcount
+        },
+        "hash": {
+            desc: "Hash a string",
+            apply: hash,
+            settings: hashSettings
         }
     },
     "fun": {
@@ -30,6 +37,11 @@ const effects = {
             desc: "Random upper/lower case",
             apply: randomCase,
             settings: caseSettings
+        },
+        "shuffle": {
+            desc: "Shuffle characters, words, or lines",
+            apply: shuffle,
+            settings: shuffleSettings
         },
         "pig latin": {
             desc: "a language game where the first letter of each word is moved to the end of the word and \"ay\" is added",

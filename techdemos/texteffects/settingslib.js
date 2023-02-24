@@ -13,13 +13,18 @@ class Setting {
         this.min = min
         this.max = max
         this.step = step
-        if (value === true || value === false) {
+        if (typeof value === "boolean") {
             this.settingType = 0
         }
         else if (typeof value === "number") {
             this.settingType = 2
         }
-        else {
+        else if (typeof value === "object") {
+            this.settingType = 3
+            this.options = value
+            this.value = value[0]
+        }
+        else if (typeof value === "string") {
             this.settingType = 1
         }
     }
@@ -65,6 +70,22 @@ class Setting {
                 numinput.addEventListener("change", () => this.value = numinput.value)
                 numel.appendChild(numinput)
                 return numel
+            case 3:
+                const comboel = document.createElement("li")
+                comboel.title = this.description
+                const combodiv = document.createElement("div")
+                combodiv.innerText = `${this.name}:`
+                comboel.appendChild(combodiv)
+                const comboinput = document.createElement("select")
+                for (const option of this.options) {
+                    const optionEl = document.createElement("option")
+                    optionEl.innerText = option
+                    optionEl.value = option
+                    comboinput.appendChild(optionEl)
+                }
+                comboel.appendChild(comboinput)
+                comboinput.addEventListener("change", () => this.value = comboinput.value)
+                return comboel
         }
     }
 }
