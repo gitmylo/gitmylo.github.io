@@ -10,13 +10,23 @@
   <meta property="og:image" content="https://gitmylo.github.io/techdemos/texteffects/preview.png" />
 </head>
 <body>
+<div id="settingsContainer" class="settingsContainer hidden">
+  <div class="settingsSub">
+    <h1 id="settingsTitle">Title</h1>
+    <div id="close" onclick="this.parentElement.parentElement.classList.add('hidden')">close</div>
+    <ul id="settings"></ul>
+  </div>
+</div>
 <div class="threegrid">
   <textarea id="input" cols="30" rows="10" class="panel"></textarea>
   <div class="panel">
     <div class="pointers">
+      <div class="middle">v Category</div>
+      <select name="mode" id="effectModeCat"></select>
       <div class="middle">v Mode</div>
       <select name="mode" id="effectMode"></select>
       <button class="generate" id="applyButton">Apply</button>
+      <button class="generate" id="settingsButton" onclick="document.getElementById('settingsContainer').classList.remove('hidden')">Settings</button>
       <div class="left"><- Input</div>
       <div class="right">Output -></div>
     </div>
