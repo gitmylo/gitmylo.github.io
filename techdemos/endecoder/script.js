@@ -8,7 +8,7 @@ import {aggressiveUrlEncode, aggressiveUrlEncodeNonDestructive} from "./encoders
 
 const inputBox = document.getElementById("input")
 const outputBox = document.getElementById("output")
-const modeSelector = document.getElementById("enDeCoderMode")
+const modeSelector = document.getElementById("effectMode")
 const encodeButton = document.getElementById("encodeButton")
 const decodeButton = document.getElementById("decodeButton")
 
