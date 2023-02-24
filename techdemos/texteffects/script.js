@@ -1,4 +1,5 @@
-import {randomCase} from "./effects/randomcasing.js";
+import {randomCase} from "./effects/randomcasing.js"
+import {wordcount} from "./effects/wordcount.js"
 
 
 const inputBox = document.getElementById("input")
@@ -10,6 +11,10 @@ const effects = {
     "random case": {
         desc: "random upper/lower case",
         apply: randomCase
+    },
+    "word count": {
+        desc: "Count words, lines and characters",
+        apply: wordcount
     }
 }
 
