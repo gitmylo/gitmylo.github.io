@@ -18,5 +18,5 @@ input.value = `000260701
 
 solveButton.addEventListener("click", e => {
     const start = performance.now()
-    output.value = `${solve(input.value, steps.value)}\nIt took ${performance.now() - start}ms`
+    output.value = `${solve(input.value, steps.value, "statistics")}\nIt took ${performance.now() - start}ms`
 })
