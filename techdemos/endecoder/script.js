@@ -21,7 +21,7 @@ const endecoders = {
     "url (aggressive)": {
         desc: "Aggressive url encoding, which encodes every single character",
         encode: aggressiveUrlEncode,
-        decode: decodeURI
+        decode: decodeURIComponent
     },
     "url (reverse pattern)": {
         desc: "Url encoding, keeps url valid but hard to read",
