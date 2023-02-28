@@ -1,6 +1,7 @@
 class Setting {
     /**
      * @param name {string}
+     * @param description {string}
      * @param value {string|boolean|number}
      * @param min {number}
      * @param max {number}
