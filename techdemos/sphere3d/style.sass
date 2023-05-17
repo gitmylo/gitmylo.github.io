@@ -1,0 +1,36 @@
+@mixin random-bgr()
+  background: rgb(random(255), random(255), random(255))
+
+$x: 16
+$y: 16
+$x_step: 360/$x
+$y_step: 360/$y
+$dist: 200
+
+@for $xv from 0 through $x - 1
+  @for $yv from 0 through $y - 1
+    @keyframes side#{$xv}-#{$yv}
+      0%
+        transform: rotate3d(0, 0, 0, 0deg) rotateX(#{$yv*$y_step}deg) rotateY(#{$xv*$x_step}deg) translate3d(0, 0, #{$dist}px)
+      100%
+        transform: rotate3d(3, 5, 0, 360deg) rotateX(#{$yv*$y_step}deg) rotateY(#{$xv*$x_step}deg) translate3d(0, 0, #{$dist}px)
+    div.side#{$xv}-#{$yv}
+      @include random-bgr()
+      transform: rotateX(#{$yv*$y_step}deg) rotateY(#{$xv*$x_step}deg) translate3d(0, 0, #{$dist}px)
+      animation: side#{$xv}-#{$yv} linear 4s infinite
+      backface-visibility: hidden
+
+.sphere
+  position: absolute
+  width: 100vw
+  height: 100vh
+  left: 0
+  top: 0
+  box-sizing: border-box
+
+.sphere div
+  width: 100px
+  height: 100px
+  position: absolute
+  left: calc(50% - 50px)
+  top: calc(50% - 50px)
