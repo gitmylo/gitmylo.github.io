@@ -1,5 +1,5 @@
-const x = 16
-const y = 16
+const x = 64
+const y = 64
 
 const sphereParent = document.getElementById('sphereParent')
 

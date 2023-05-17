@@ -1,11 +1,13 @@
 @mixin random-bgr()
   background: rgb(random(255), random(255), random(255))
 
-$x: 16
-$y: 16
+$x: 64
+$y: 64
 $x_step: 360/$x
 $y_step: 360/$y
 $dist: 200
+$size_x: $dist/$x * 10
+$size_y: $dist/$y * 10
 
 @for $xv from 0 through $x - 1
   @for $yv from 0 through $y - 1
@@ -29,8 +31,8 @@ $dist: 200
   box-sizing: border-box
 
 .sphere div
-  width: 100px
-  height: 100px
+  width: #{$size_x}px
+  height: #{$size_y}px
   position: absolute
   left: calc(50% - 50px)
   top: calc(50% - 50px)
