@@ -220,9 +220,25 @@ class lineLayer extends drawLayer {
     }
 }
 
+class circleLayer extends drawLayer {
+    constructor(pos, rad, from=0, to=2*Math.PI, thickness=1) {
+        super({pos, rad, from, to, thickness});
+    }
+
+    draw(canvas) {
+        const p = this.savedParams
+        canvas.lineWidth = p.thickness
+        canvas.beginPath()
+        canvas.arc(...p.pos, p.rad, p.from, p.to)
+        canvas.stroke()
+        canvas.closePath()
+    }
+}
+
 export const layer = {
     drawLayer,
-    lineLayer
+    lineLayer,
+    circleLayer
 }
 
 export class Drawing {
