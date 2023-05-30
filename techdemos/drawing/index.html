@@ -40,6 +40,8 @@
           .addLayer(new layer.circleLayer([200, 220], 15)) // Left pupil
           .addLayer(new layer.circleLayer([290, 210], 30)) // Right eye
           .addLayer(new layer.circleLayer([280, 220], 15)) // Right pupil
+
+          .addLayer(new layer.textLayer([250, 80], 'He\'s looking respectfully.', 0, '40px arial'))
           .draw()
 
       output.appendChild(window.$d.canvas)

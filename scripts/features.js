@@ -235,10 +235,25 @@ class circleLayer extends drawLayer {
     }
 }
 
+class textLayer extends drawLayer {
+    constructor(pos, text, center=1, font='30px Arial') {
+        super({pos, text, center, font});
+    }
+
+    draw(canvas) {
+        const p = this.savedParams
+        canvas.font = p.font
+        const measurement = canvas.measureText(p.text)
+        p.pos[0] -= (((-p.center+1)*0.5)*measurement.width)
+        canvas.fillText(p.text, ...p.pos)
+    }
+}
+
 export const layer = {
     drawLayer,
     lineLayer,
-    circleLayer
+    circleLayer,
+    textLayer
 }
 
 export class Drawing {
