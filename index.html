@@ -13,8 +13,36 @@
     <h1>Welcome to <a href="https://www.github.com/gitmylo/">Mylo's</a> github.io</h1>
     <div class="hSplitter"></div>
     <h2>Sub pages:</h2>
-<!--        <a class="dirLink" href="Tools">Tools pages</a>-->
-    <a class="dirLink" href="techdemos">Tech demo pages</a>
+    <!--<a class="dirLink" href="Tools">Tools pages</a>-->
+    <a class="dirLink" href="techdemos" data-caption="$techdemos">Tech demo pages</a>
     <a class="dirLink" href="interesting">Interesting stuff</a>
+    <a class="dirLink" href="ai" data-caption="$ai">AI stuff</a>
+
+    <script type="module">
+        import {previewBuilder, features} from "./scripts/features.js"
+
+        new previewBuilder('Tech demos')
+            .markdown(`
+Tech demo pages contain tech demos, such as:
+* raycaster
+* 3d cube
+* markov chain
+* encoder and text effects
+* and more!
+            `)
+            .build('$techdemos')
+
+        new previewBuilder('AI')
+            .markdown(`
+AI related pages
+* Pages
+* Demos
+            `)
+
+            .build('$ai')
+
+        // features.enableToolTips()
+        features.tooManyTooltips()
+    </script>
 </body>
 </html>

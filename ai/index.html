@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI pages</title>
+
+  <link rel="stylesheet" href="/stylesheets/normalise.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Welcome to the AI section of <a href="https://www.github.com/gitmylo/">Mylo's</a> github.io</h1>
+  <div class="hSplitter"></div>
+  <h2>AI features:</h2>
+  <a class="dirLink" href="pages" data-caption="$pages">pages</a>
+  <a class="dirLink" href="demos" data-caption="$demos">demos</a>
+
+  <script type="module">
+      import {previewBuilder, features} from "../scripts/features.js"
+
+      new previewBuilder('Pages')
+          .markdown(`
+          ## Pages explaining my understanding of AI
+          They contain what I think I know, not what I actually know.
+          The goal is to learn as much as I can, and provide my knowledge here.
+
+          ## This is not a trusted source of information
+          As said before, this is just how I think everything works, it should be accurate, but could still be wrong.
+          If something is not accurate, feel free to correct me so I can improve on my knowledge. 👍
+          `)
+
+          .build('$pages')
+
+      new previewBuilder('Demos')
+          .markdown(`
+          ## Pages with demos to demonstrate my knowledge of AI
+          * All pages are written in pure js, html and css
+          * These are my own implementations, I am not using any special libraries.
+          `)
+
+          .build('$demos')
+
+      features.tooManyTooltips()
+  </script>
+</body>
+</html>

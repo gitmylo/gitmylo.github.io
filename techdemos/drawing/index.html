@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML canvas drawing by @gitmylo</title>
+  <link rel="stylesheet" href="../../stylesheets/normalise.css">
+  <link rel="stylesheet" href="../../stylesheets/style.css">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:title" content="HTML canvas drawing">
+</head>
+<body>
+  <div class="twogrid">
+    <div class="panel">
+      <h1>Loading/Saving</h1>
+      <button id="load">Load</button>
+      <button id="save">Save</button>
+    </div>
+    <div id="output" class="panel"></div>
+  </div>
+  <script type="module">
+      import {Drawing, layer} from "../../scripts/features.js"
+
+      const output = document.getElementById('output')
+
+      document.getElementById('load').addEventListener('click', () => {
+          window.$d = Drawing.drawingFromJson(prompt('Paste the json')).draw().canvas
+          output.innerHTML = ''
+          output.appendChild(window.$d)
+      })
+      document.getElementById('save').addEventListener('click', () => {
+          alert(window.$d.saveJson())
+      })
+
+      window.$d = new Drawing(500, 500, 'white')
+          .addLayer(new layer.lineLayer([0, 0], [100, 200]))
+          .draw()
+
+      output.appendChild(window.$d.canvas)
+  </script>
+</body>
+</html>
