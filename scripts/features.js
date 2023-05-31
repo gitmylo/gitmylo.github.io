@@ -244,8 +244,8 @@ class lineLayer extends drawLayer {
 }
 
 class circleLayer extends drawLayer {
-    constructor(pos, rad, from=0, to=2*Math.PI, thickness=1) {
-        super({pos, rad, from, to, thickness});
+    constructor(pos, rad, filled=false, from=0, to=2*Math.PI, thickness=1) {
+        super({pos, rad, from, to, filled, thickness});
     }
 
     draw(canvas) {
@@ -253,7 +253,10 @@ class circleLayer extends drawLayer {
         canvas.lineWidth = p.thickness
         canvas.beginPath()
         canvas.arc(...p.pos, p.rad, p.from, p.to)
-        canvas.stroke()
+        if (p.filled)
+            canvas.fill()
+        else
+            canvas.stroke()
         canvas.closePath()
     }
 }
