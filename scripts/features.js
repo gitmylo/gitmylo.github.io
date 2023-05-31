@@ -321,7 +321,7 @@ export class Drawing {
      * @type {CanvasRenderingContext2D}
      */
     context
-    posOffset = {x:0,y:0,scale:1}
+    posOffset = {x:0,y:0,scale:1,dragging:false}
 
     constructor(width, height, background=null) {
         this.canvas = document.createElement('canvas')
@@ -332,21 +332,32 @@ export class Drawing {
         this.context = this.canvas.getContext('2d')
         this.canvas.addEventListener('wheel', ev => {
             const scrollfac = ((Math.max(-999, Math.min(999, ev.deltaY))/10)+1000)/1000
-            this.move(0, 0, scrollfac)
+            this.move(0, 0, scrollfac, ev.offsetX, ev.offsetY)
             ev.preventDefault()
+        })
+        this.canvas.addEventListener('mousedown', () => {
+            this.posOffset.dragging = true
+        })
+        document.addEventListener('mousemove', ev => {
+            if (this.posOffset.dragging) {
+                this.move(ev.movementX*(1/this.posOffset.scale), ev.movementY*(1/this.posOffset.scale), 1)
+            }
+        })
+        document.addEventListener('mouseup', () => {
+            this.posOffset.dragging = false
         })
     }
     
     draw() {
         const c = this.context
-        c.clearRect(0, 0, c.canvas.width, c.canvas.height)
+        c.clearRect(0, 0, c.canvas.width*(1/this.posOffset.scale), c.canvas.height*(1/this.posOffset.scale))
         for (const layer of this.layers) {
             layer.draw(c, this.posOffset)
         }
         return this
     }
 
-    move(x, y, scale) {
+    move(x, y, scale, mouseX, mouseY) {
         this.posOffset.x += x
         this.posOffset.y += y
         this.posOffset.scale *= scale
