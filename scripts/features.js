@@ -190,6 +190,8 @@ class drawLayer {
         }
         const l = new layerClass()
         l.savedParams = data.params
+        if (data?.params)
+            console.log(data.params)
         return l
     }
 
@@ -204,6 +206,27 @@ class drawLayer {
      * @param canvas {CanvasRenderingContext2D}
      */
     draw(canvas) {}
+}
+
+class drawBundle {
+    layers
+    constructor(...layers) {
+        this.layers = layers
+    }
+}
+
+class colorLayer extends drawLayer {
+    constructor(fill, stroke) {
+        super({fill, stroke})
+    }
+
+    draw(canvas) {
+        const p = this.savedParams
+        if (p.fill)
+            canvas.fillStyle = p.fill
+        if (p.stroke)
+            canvas.strokeStyle = p.stroke
+    }
 }
 
 class lineLayer extends drawLayer {
@@ -235,6 +258,19 @@ class circleLayer extends drawLayer {
     }
 }
 
+class rectLayer extends drawLayer {
+    constructor(start, end) {
+        super({start, end})
+    }
+
+    draw(canvas) {
+        const p = this.savedParams
+        p.end[0] -= p.start[0]
+        p.end[1] -= p.start[1]
+        canvas.fillRect(...p.start, ...p.end)
+    }
+}
+
 class textLayer extends drawLayer {
     constructor(pos, text, center=1, font='30px Arial') {
         super({pos, text, center, font});
@@ -251,9 +287,13 @@ class textLayer extends drawLayer {
 
 export const layer = {
     drawLayer,
+    colorLayer,
     lineLayer,
     circleLayer,
-    textLayer
+    rectLayer,
+    textLayer,
+
+    drawBundle
 }
 
 export class Drawing {
@@ -286,7 +326,10 @@ export class Drawing {
     }
 
     addLayer(layer) {
-        this.layers.push(layer)
+        if (layer.name !== undefined && layer.name.endsWith('Bundle'))
+            this.layers.push(...layer.layers)
+        else
+            this.layers.push(layer)
         return this
     }
 
