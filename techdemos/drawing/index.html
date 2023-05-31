@@ -33,7 +33,11 @@
 
       window.$d = new Drawing(500, 500, 'white')
           // .addLayer(new layer.lineLayer([0, 0], [100, 200]))
+          .addLayer(new layer.colorLayer('black', 'black'))
           .addLayer(new layer.rectLayer([0, 300], [100, 400]))
+          .addLayer(new layer.colorLayer('red', 'red'))
+          .addLayer(new layer.rectLayer([0, 300], [100, 400], false, 5))
+          .addLayer(new layer.colorLayer('black', 'black'))
 
           .addLayer(new layer.circleLayer([250, 250], 100)) // Head
           .addLayer(new layer.circleLayer([250, 250], 70, false, 0.5, Math.PI-0.5)) // Mouth
@@ -50,6 +54,8 @@
 
           .addLayer(new layer.colorLayer('white', 'black'))
           .addLayer(new layer.textLayer([50, 360], 'Bruh', 0))
+
+          .move(0, Math.random()*10, 1)
           .draw()
 
       output.appendChild(window.$d.canvas)

@@ -176,6 +176,10 @@ function tooManyTooltips() {
     }
 }
 
+function offsetPos(posarr, offset) {
+    return [posarr[0]+offset.x, posarr[1]+offset.y]
+}
+
 class drawLayer {
     savedParams
     constructor(params) {
@@ -204,8 +208,9 @@ class drawLayer {
 
     /**
      * @param canvas {CanvasRenderingContext2D}
+     * @param offset {{x:number,y:number}}
      */
-    draw(canvas) {}
+    draw(canvas, offset) {}
 }
 
 class drawBundle {
@@ -220,7 +225,7 @@ class colorLayer extends drawLayer {
         super({fill, stroke})
     }
 
-    draw(canvas) {
+    draw(canvas, offset) {
         const p = this.savedParams
         if (p.fill)
             canvas.fillStyle = p.fill
@@ -234,11 +239,11 @@ class lineLayer extends drawLayer {
         super({start, end, thickness})
     }
 
-    draw(canvas) {
+    draw(canvas, offset) {
         const p = this.savedParams
         canvas.lineWidth = p.thickness
-        canvas.moveTo(...p.start)
-        canvas.lineTo(...p.end)
+        canvas.moveTo(...offsetPos(p.start, offset))
+        canvas.lineTo(...offsetPos(p.end, offset))
         canvas.stroke()
     }
 }
@@ -248,11 +253,11 @@ class circleLayer extends drawLayer {
         super({pos, rad, from, to, filled, thickness});
     }
 
-    draw(canvas) {
+    draw(canvas, offset) {
         const p = this.savedParams
         canvas.lineWidth = p.thickness
         canvas.beginPath()
-        canvas.arc(...p.pos, p.rad, p.from, p.to)
+        canvas.arc(...offsetPos(p.pos, offset), p.rad, p.from, p.to)
         if (p.filled)
             canvas.fill()
         else
@@ -262,16 +267,21 @@ class circleLayer extends drawLayer {
 }
 
 class rectLayer extends drawLayer {
-    constructor(start, end) {
-        super({start, end})
+    constructor(start, end, filled=true, linethick=1) {
+        super({start, end, filled, linethick})
     }
 
-    draw(canvas) {
+    draw(canvas, offset) {
         const p = this.savedParams
-        const end = [...p.end]
-        end[0] -= p.start[0]
-        end[1] -= p.start[1]
-        canvas.fillRect(...p.start, ...end)
+        const end = [...offsetPos(p.end, offset)]
+        const start = [...offsetPos(p.start, offset)]
+        end[0] -= start[0]
+        end[1] -= start[1]
+        canvas.lineWidth = p.linethick
+        if (p.filled)
+            canvas.fillRect(...start, ...end)
+        else
+            canvas.strokeRect(...start, ...end)
     }
 }
 
@@ -280,13 +290,13 @@ class textLayer extends drawLayer {
         super({pos, text, center, font});
     }
 
-    draw(canvas) {
+    draw(canvas, offset) {
         const p = this.savedParams
         canvas.font = p.font
         const measurement = canvas.measureText(p.text)
         const pos = [...p.pos]
         pos[0] -= (((-p.center+1)*0.5)*measurement.width)
-        canvas.fillText(p.text, ...pos)
+        canvas.fillText(p.text, ...offsetPos(pos, offset))
     }
 }
 
@@ -311,6 +321,7 @@ export class Drawing {
      * @type {CanvasRenderingContext2D}
      */
     context
+    posOffset = {x:0,y:0,scale:1}
 
     constructor(width, height, background=null) {
         this.canvas = document.createElement('canvas')
@@ -319,14 +330,28 @@ export class Drawing {
         if (background !== null) this.canvas.style.background = background
         this.background = background
         this.context = this.canvas.getContext('2d')
+        this.canvas.addEventListener('wheel', ev => {
+            const scrollfac = ((Math.max(-999, Math.min(999, ev.deltaY))/10)+1000)/1000
+            this.move(0, 0, scrollfac)
+            ev.preventDefault()
+        })
     }
     
     draw() {
         const c = this.context
-        c.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        c.clearRect(0, 0, c.canvas.width, c.canvas.height)
         for (const layer of this.layers) {
-            layer.draw(c)
+            layer.draw(c, this.posOffset)
         }
+        return this
+    }
+
+    move(x, y, scale) {
+        this.posOffset.x += x
+        this.posOffset.y += y
+        this.posOffset.scale *= scale
+        this.context.scale(scale, scale)
+        this.draw()
         return this
     }
 
