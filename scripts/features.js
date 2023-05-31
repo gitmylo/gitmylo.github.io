@@ -176,6 +176,13 @@ function tooManyTooltips() {
     }
 }
 
+function markdownEverywhere() {
+    const markdownElements = document.getElementsByClassName('markdown')
+    for (const markdownElement of markdownElements) {
+        markdownElement.innerHTML = miniMarkDown(markdownElement.innerHTML)
+    }
+}
+
 class drawLayer {
     savedParams
     constructor(params) {
@@ -244,7 +251,7 @@ class lineLayer extends drawLayer {
 }
 
 class circleLayer extends drawLayer {
-    constructor(pos, rad, filled=false, from=0, to=2*Math.PI, thickness=1) {
+    constructor(pos, rad, filled=false, thickness=1, from=0, to=2*Math.PI) {
         super({pos, rad, from, to, filled, thickness});
     }
 
@@ -295,6 +302,35 @@ class textLayer extends drawLayer {
     }
 }
 
+class arrowBundle extends drawBundle {
+    constructor(from, to, thickness=1, fromToDir=0) {
+        const headlen = 20
+        let arrowFrom = from
+        let arrowTo = to
+        let ang = 0
+        let len = 0
+        if (fromToDir === -1) {
+            [ang, len] = from
+            arrowFrom = [to[0]-(Math.cos(ang/180*Math.PI)*len),to[1]-(Math.sin(ang/180*Math.PI)*len)]
+            ang /= 180/Math.PI
+        }
+        else if (fromToDir === 1) {
+            [ang, len] = to
+            arrowTo = [from[0]+(Math.cos(ang/180*Math.PI)*len), from[1]+(Math.sin(ang/180*Math.PI)*len)]
+            ang /= 180/Math.PI
+        }
+        else {
+            ang = Math.atan2((to[1]-from[1]), (to[0]-from[0]))
+            len = Math.sqrt(Math.pow(to[1]-from[1], 2)+Math.pow(to[0]-from[0], 2))
+        }
+        super(
+            new layer.lineLayer(arrowFrom, arrowTo, thickness),
+            new layer.lineLayer(arrowTo, [arrowTo[0] - headlen * Math.cos(ang - Math.PI / 6), arrowTo[1] - headlen * Math.sin(ang - Math.PI / 6)], thickness),
+            new layer.lineLayer(arrowTo, [arrowTo[0] - headlen * Math.cos(ang + Math.PI / 6), arrowTo[1] - headlen * Math.sin(ang + Math.PI / 6)], thickness),
+        );
+    }
+}
+
 export const layer = {
     drawLayer,
     colorLayer,
@@ -303,7 +339,8 @@ export const layer = {
     rectLayer,
     textLayer,
 
-    drawBundle
+    drawBundle,
+    arrowBundle
 }
 
 export class Drawing {
@@ -351,12 +388,13 @@ export class Drawing {
     }
     
     draw(layer=null) {
-        const l = layer ??= this.currentLayer
+        const l = layer || this.currentLayer
         const c = this.context
-        c.clearRect(-100, -100, c.canvas.width*(1+Math.abs(this.posOffset.scale))+200, c.canvas.height*(1+Math.abs(this.posOffset.scale))+200)
+        c.clearRect(-10000, -10000, c.canvas.width*(1+Math.abs(this.posOffset.scale))+20000, c.canvas.height*(1+Math.abs(this.posOffset.scale))+20000)
         for (const lay of l) {
             lay.draw(c)
         }
+        this.lastRenderedLayer = l
         return this
     }
 
@@ -381,7 +419,7 @@ export class Drawing {
     }
 
     addLayer(layer) {
-        if (layer.name !== undefined && layer.name.endsWith('Bundle'))
+        if (layer.constructor.name !== undefined && layer.constructor.name.toLowerCase().endsWith('bundle'))
             this.currentLayer.push(...layer.layers)
         else
             this.currentLayer.push(layer)
@@ -411,7 +449,6 @@ export class Drawing {
 
     nextFrame() {
         this.index %= this.layers.length
-        this.lastRenderedLayer = this.layers[this.index]
         this.draw(this.lastRenderedLayer)
         this.index++
         return this
@@ -469,5 +506,6 @@ export class previewBuilder {
 
 export const features = {
     enableToolTips,
-    tooManyTooltips
+    tooManyTooltips,
+    markdownEverywhere
 }

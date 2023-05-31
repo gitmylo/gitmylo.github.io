@@ -1,0 +1,7 @@
+ul a[href] {
+    color: white;
+    text-decoration: none;
+}
+ul a:visited {
+    color: lightgray;
+}
