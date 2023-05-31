@@ -331,7 +331,7 @@ export class Drawing {
         this.background = background
         this.context = this.canvas.getContext('2d')
         this.canvas.addEventListener('wheel', ev => {
-            const scrollfac = ((Math.max(-999, Math.min(999, ev.deltaY))/10)+1000)/1000
+            const scrollfac = ((Math.max(-999, Math.min(999, -ev.deltaY))/10)+1000)/1000
             this.move(0, 0, scrollfac, ev.offsetX, ev.offsetY)
             ev.preventDefault()
         })
