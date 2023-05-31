@@ -20,6 +20,41 @@
   <script type="module">
       import {Drawing, layer} from "../../scripts/features.js"
 
+      /**
+       * @param drawing {Drawing}
+       * @param blink {number}
+       */
+      function createBlinkLayer(drawing, blink=0) {
+          const blinkFrom = -((Math.sin(blink*Math.PI/2)*0.5)-1.5)+Math.PI/2
+          const blinkTo = ((Math.sin(blink*Math.PI/2)*0.5)-1.5)+Math.PI/2
+          return drawing
+              .addLayer(new layer.colorLayer('black', 'black'))
+              .addLayer(new layer.rectLayer([0, 300], [100, 400]))
+              .addLayer(new layer.colorLayer('red', 'red'))
+              .addLayer(new layer.rectLayer([0, 300], [100, 400], false, 5))
+              .addLayer(new layer.colorLayer('black', 'black'))
+
+              .addLayer(new layer.circleLayer([250, 250], 100)) // Head
+              .addLayer(new layer.circleLayer([250, 250], 70, false, 0.5, Math.PI-0.5)) // Mouth
+              .addLayer(new layer.colorLayer('red', 'black'))
+              .addLayer(new layer.circleLayer([250, 260], 25, true)) // Nose
+              .addLayer(new layer.circleLayer([250, 260], 25, false)) // Nose
+              .addLayer(new layer.colorLayer('black', 'black'))
+              .addLayer(new layer.circleLayer([210, 210], 30)) // Left eye
+              .addLayer(new layer.circleLayer([210, 210], 30, true, blinkFrom, blinkTo)) // Left eyelid
+              .addLayer(new layer.circleLayer([200, 220], 15, true)) // Left pupil
+              .addLayer(new layer.circleLayer([290, 210], 30)) // Right eye
+              .addLayer(new layer.circleLayer([290, 210], 30, true, blinkFrom, blinkTo)) // Right eyelid
+              .addLayer(new layer.circleLayer([280, 220], 15, true)) // Right pupil
+
+              .addLayer(new layer.textLayer([250, 80], 'He\'s looking respectfully.', 0, '40px arial'))
+
+              .addLayer(new layer.colorLayer('white', 'black'))
+              .addLayer(new layer.textLayer([50, 360], 'Bruh', 0))
+
+              .pushFrame()
+      }
+
       const output = document.getElementById('output')
 
       document.getElementById('load').addEventListener('click', () => {
@@ -31,31 +66,14 @@
           alert(window.$d.saveJson())
       })
 
-      window.$d = new Drawing(500, 500, 'white')
-          // .addLayer(new layer.lineLayer([0, 0], [100, 200]))
-          .addLayer(new layer.colorLayer('black', 'black'))
-          .addLayer(new layer.rectLayer([0, 300], [100, 400]))
-          .addLayer(new layer.colorLayer('red', 'red'))
-          .addLayer(new layer.rectLayer([0, 300], [100, 400], false, 5))
-          .addLayer(new layer.colorLayer('black', 'black'))
+      window.$d = new Drawing(500, 500, 'white', 60)
 
-          .addLayer(new layer.circleLayer([250, 250], 100)) // Head
-          .addLayer(new layer.circleLayer([250, 250], 70, false, 0.5, Math.PI-0.5)) // Mouth
-          .addLayer(new layer.colorLayer('red', 'black'))
-          .addLayer(new layer.circleLayer([250, 260], 25, true)) // Nose
-          .addLayer(new layer.circleLayer([250, 260], 25, false)) // Nose
-          .addLayer(new layer.colorLayer('black', 'black'))
-          .addLayer(new layer.circleLayer([210, 210], 30)) // Left eye
-          .addLayer(new layer.circleLayer([200, 220], 15, true)) // Left pupil
-          .addLayer(new layer.circleLayer([290, 210], 30)) // Right eye
-          .addLayer(new layer.circleLayer([280, 220], 15, true)) // Right pupil
+      for (let i = 0; i < Math.PI*2; i+=0.1/6) {
+          const blinkAmount = Math.sin(i)
+          createBlinkLayer(window.$d, blinkAmount)
+      }
 
-          .addLayer(new layer.textLayer([250, 80], 'He\'s looking respectfully.', 0, '40px arial'))
-
-          .addLayer(new layer.colorLayer('white', 'black'))
-          .addLayer(new layer.textLayer([50, 360], 'Bruh', 0))
-
-          .draw()
+      window.$d.play()
 
       output.appendChild(window.$d.canvas)
   </script>

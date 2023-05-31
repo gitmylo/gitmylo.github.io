@@ -307,7 +307,9 @@ export const layer = {
 }
 
 export class Drawing {
+    currentLayer = []
     layers = []
+    lastRenderedLayer = []
     /**
      * @type {HTMLCanvasElement}
      */
@@ -318,8 +320,11 @@ export class Drawing {
     context
     posOffset = {x:0,y:0,scale:1,dragging:false}
     matrix
+    framerate
+    index = 0
 
-    constructor(width, height, background=null) {
+    constructor(width, height, background=null, framerate=10) {
+        this.framerate=framerate
         this.canvas = document.createElement('canvas')
         this.canvas.width = width
         this.canvas.height = height
@@ -345,11 +350,12 @@ export class Drawing {
         })
     }
     
-    draw() {
+    draw(layer=null) {
+        const l = layer ??= this.currentLayer
         const c = this.context
         c.clearRect(0, 0, c.canvas.width*(1/this.posOffset.scale), c.canvas.height*(1/this.posOffset.scale))
-        for (const layer of this.layers) {
-            layer.draw(c)
+        for (const lay of l) {
+            lay.draw(c)
         }
         return this
     }
@@ -371,27 +377,59 @@ export class Drawing {
         c.clearRect(-100, -100, c.canvas.width*(1+Math.abs(this.posOffset.scale))+200, c.canvas.height*(1+Math.abs(this.posOffset.scale))+200)
         this.context.setTransform(...this.matrix)
         this.context.scale(scale, scale)
-        this.draw()
+        this.draw(this.lastRenderedLayer)
         return this
     }
 
     addLayer(layer) {
         if (layer.name !== undefined && layer.name.endsWith('Bundle'))
-            this.layers.push(...layer.layers)
+            this.currentLayer.push(...layer.layers)
         else
-            this.layers.push(layer)
+            this.currentLayer.push(layer)
         return this
     }
 
     saveJson() {
-        return JSON.stringify({width: this.canvas.width, height: this.canvas.height, background: this.background, layers: this.layers.map(l => l.saveData())})
+        return JSON.stringify({width: this.canvas.width, height: this.canvas.height, background: this.background,
+            framerate: this.framerate,
+            currentLayer: this.currentLayer.map(l => l.saveData()),
+            layers: this.layers.map(l => l.map(l2 => l2.saveData()))})
     }
 
     static drawingFromJson(json) {
         const data = JSON.parse(json)
-        const drawing = new Drawing(data.width, data.height, data.background)
-        drawing.layers = data.layers.map(l => drawLayer.fromData(l))
+        const drawing = new Drawing(data.width, data.height, data.background, data.framerate)
+        drawing.currentLayer = data.currentLayer.map(l => drawLayer.fromData(l))
+        drawing.layers = data.layers.map(l => l.map(l2 => l2.fromData(l2)))
         return drawing
+    }
+
+    pushFrame() {
+        this.layers.push(this.currentLayer)
+        this.currentLayer = []
+        return this
+    }
+
+    nextFrame() {
+        this.index %= this.layers.length
+        this.lastRenderedLayer = this.layers[this.index]
+        this.draw(this.lastRenderedLayer)
+        this.index++
+        return this
+    }
+
+    play(reset=false) {
+        if (reset) this.index = 0
+        if (!this.interval) {
+            this.interval = setInterval(() => this.nextFrame(), 1000/this.framerate)
+        }
+        return this
+    }
+
+    pause() {
+        if (this.interval)
+            clearInterval(this.interval)
+        return this
     }
 }
 
