@@ -265,9 +265,10 @@ class rectLayer extends drawLayer {
 
     draw(canvas) {
         const p = this.savedParams
-        p.end[0] -= p.start[0]
-        p.end[1] -= p.start[1]
-        canvas.fillRect(...p.start, ...p.end)
+        const end = [...p.end]
+        end[0] -= p.start[0]
+        end[1] -= p.start[1]
+        canvas.fillRect(...p.start, ...end)
     }
 }
 
@@ -280,8 +281,9 @@ class textLayer extends drawLayer {
         const p = this.savedParams
         canvas.font = p.font
         const measurement = canvas.measureText(p.text)
-        p.pos[0] -= (((-p.center+1)*0.5)*measurement.width)
-        canvas.fillText(p.text, ...p.pos)
+        const pos = [...p.pos]
+        pos[0] -= (((-p.center+1)*0.5)*measurement.width)
+        canvas.fillText(p.text, ...pos)
     }
 }
 
