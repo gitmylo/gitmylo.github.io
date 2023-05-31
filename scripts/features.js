@@ -353,7 +353,7 @@ export class Drawing {
     draw(layer=null) {
         const l = layer ??= this.currentLayer
         const c = this.context
-        c.clearRect(0, 0, c.canvas.width*(1/this.posOffset.scale), c.canvas.height*(1/this.posOffset.scale))
+        c.clearRect(-100, -100, c.canvas.width*(1+Math.abs(this.posOffset.scale))+200, c.canvas.height*(1+Math.abs(this.posOffset.scale))+200)
         for (const lay of l) {
             lay.draw(c)
         }
@@ -374,7 +374,6 @@ export class Drawing {
         this.matrix[5] = this.posOffset.y
 
         this.posOffset.scale *= scale
-        c.clearRect(-100, -100, c.canvas.width*(1+Math.abs(this.posOffset.scale))+200, c.canvas.height*(1+Math.abs(this.posOffset.scale))+200)
         this.context.setTransform(...this.matrix)
         this.context.scale(scale, scale)
         this.draw(this.lastRenderedLayer)
