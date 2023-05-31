@@ -176,10 +176,6 @@ function tooManyTooltips() {
     }
 }
 
-function offsetPos(posarr, offset) {
-    return [posarr[0]+offset.x, posarr[1]+offset.y]
-}
-
 class drawLayer {
     savedParams
     constructor(params) {
@@ -208,9 +204,8 @@ class drawLayer {
 
     /**
      * @param canvas {CanvasRenderingContext2D}
-     * @param offset {{x:number,y:number}}
      */
-    draw(canvas, offset) {}
+    draw(canvas) {}
 }
 
 class drawBundle {
@@ -225,7 +220,7 @@ class colorLayer extends drawLayer {
         super({fill, stroke})
     }
 
-    draw(canvas, offset) {
+    draw(canvas) {
         const p = this.savedParams
         if (p.fill)
             canvas.fillStyle = p.fill
@@ -239,11 +234,11 @@ class lineLayer extends drawLayer {
         super({start, end, thickness})
     }
 
-    draw(canvas, offset) {
+    draw(canvas) {
         const p = this.savedParams
         canvas.lineWidth = p.thickness
-        canvas.moveTo(...offsetPos(p.start, offset))
-        canvas.lineTo(...offsetPos(p.end, offset))
+        canvas.moveTo(...p.start)
+        canvas.lineTo(...p.end)
         canvas.stroke()
     }
 }
@@ -253,11 +248,11 @@ class circleLayer extends drawLayer {
         super({pos, rad, from, to, filled, thickness});
     }
 
-    draw(canvas, offset) {
+    draw(canvas) {
         const p = this.savedParams
         canvas.lineWidth = p.thickness
         canvas.beginPath()
-        canvas.arc(...offsetPos(p.pos, offset), p.rad, p.from, p.to)
+        canvas.arc(...p.pos, p.rad, p.from, p.to)
         if (p.filled)
             canvas.fill()
         else
@@ -271,10 +266,10 @@ class rectLayer extends drawLayer {
         super({start, end, filled, linethick})
     }
 
-    draw(canvas, offset) {
+    draw(canvas) {
         const p = this.savedParams
-        const end = [...offsetPos(p.end, offset)]
-        const start = [...offsetPos(p.start, offset)]
+        const end = [...p.end]
+        const start = [...p.start]
         end[0] -= start[0]
         end[1] -= start[1]
         canvas.lineWidth = p.linethick
@@ -290,13 +285,13 @@ class textLayer extends drawLayer {
         super({pos, text, center, font});
     }
 
-    draw(canvas, offset) {
+    draw(canvas) {
         const p = this.savedParams
         canvas.font = p.font
         const measurement = canvas.measureText(p.text)
         const pos = [...p.pos]
         pos[0] -= (((-p.center+1)*0.5)*measurement.width)
-        canvas.fillText(p.text, ...offsetPos(pos, offset))
+        canvas.fillText(p.text, ...pos)
     }
 }
 
@@ -322,6 +317,7 @@ export class Drawing {
      */
     context
     posOffset = {x:0,y:0,scale:1,dragging:false}
+    matrix
 
     constructor(width, height, background=null) {
         this.canvas = document.createElement('canvas')
@@ -330,8 +326,9 @@ export class Drawing {
         if (background !== null) this.canvas.style.background = background
         this.background = background
         this.context = this.canvas.getContext('2d')
+        this.matrix = [1, 0, 0, 1, 0, 0]
         this.canvas.addEventListener('wheel', ev => {
-            const scrollfac = ((Math.max(-999, Math.min(999, -ev.deltaY))/10)+1000)/1000
+            const scrollfac = ((Math.max(-999, Math.min(999, -ev.deltaY))/10)+200)/200
             this.move(0, 0, scrollfac, ev.offsetX, ev.offsetY)
             ev.preventDefault()
         })
@@ -340,7 +337,7 @@ export class Drawing {
         })
         document.addEventListener('mousemove', ev => {
             if (this.posOffset.dragging) {
-                this.move(ev.movementX*(1/this.posOffset.scale), ev.movementY*(1/this.posOffset.scale), 1)
+                this.move(ev.movementX*(1/this.posOffset.scale), ev.movementY*(1/this.posOffset.scale), 1, ev.offsetX, ev.offsetY)
             }
         })
         document.addEventListener('mouseup', () => {
@@ -352,15 +349,27 @@ export class Drawing {
         const c = this.context
         c.clearRect(0, 0, c.canvas.width*(1/this.posOffset.scale), c.canvas.height*(1/this.posOffset.scale))
         for (const layer of this.layers) {
-            layer.draw(c, this.posOffset)
+            layer.draw(c)
         }
         return this
     }
 
     move(x, y, scale, mouseX, mouseY) {
-        this.posOffset.x += x
-        this.posOffset.y += y
+        const c = this.context
+
+        this.posOffset.x = mouseX - (mouseX - this.posOffset.x) * scale
+        this.posOffset.y = mouseY - (mouseY - this.posOffset.y) * scale
+
+        this.posOffset.x += x*this.posOffset.scale
+        this.posOffset.y += y*this.posOffset.scale
+
+        this.matrix[0] = this.matrix[3] = this.posOffset.scale
+        this.matrix[4] = this.posOffset.x
+        this.matrix[5] = this.posOffset.y
+
         this.posOffset.scale *= scale
+        c.clearRect(-100, -100, c.canvas.width*(1+Math.abs(this.posOffset.scale))+200, c.canvas.height*(1+Math.abs(this.posOffset.scale))+200)
+        this.context.setTransform(...this.matrix)
         this.context.scale(scale, scale)
         this.draw()
         return this
