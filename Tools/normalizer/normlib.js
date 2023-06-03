@@ -9,6 +9,49 @@ function simpleHeader(title, description) {
     return contentDiv
 }
 
+/**
+ *
+ * @param title {string}
+ * @param data {string[]}
+ * @param customFormatting {function(string): string}}
+ * @param extras {{key:{value:function(string):boolean, onvalue:function(string, value)}}}
+ * @returns {HTMLTableElement}
+ */
+function simpleTable(title, data, customFormatting=(i)=>i, extras={}) {
+    const tel = document.createElement('table')
+    const headerRow = document.createElement('tr')
+    const headerText = document.createElement('th')
+    headerText.innerText = title
+    headerRow.appendChild(headerText)
+    for (const extraName in extras) {
+        const extraText = document.createElement('th')
+        extraText.innerText = extraName
+        headerRow.appendChild(extraText)
+    }
+    tel.appendChild(headerRow)
+
+    for (const d of data) {
+        const row = document.createElement('tr')
+        const rowText = document.createElement('td')
+        rowText.innerHTML = customFormatting(d)
+        row.appendChild(rowText)
+        for (const extraName in extras) {
+            const extraVals = extras[extraName]
+            const extraText = document.createElement('td')
+            const checkBox = document.createElement('input')
+            checkBox.type = 'checkbox'
+            checkBox.checked = extraVals.value(d)
+            checkBox.addEventListener('change', () => {
+                extraVals.onvalue(d, checkBox.checked)
+            })
+            extraText.appendChild(checkBox)
+            row.appendChild(extraText)
+        }
+        tel.appendChild(row)
+    }
+    return tel
+}
+
 function updateStrList(data, div, otherels) {
     const listel = document.createElement('ul')
     for (const d of data) {
@@ -88,6 +131,10 @@ class NormStep {
 // ==============STEP 1=================
 
 class Step1_1 extends NormStep {
+    constructor() {
+        super()
+        this.data = ['test', 'test2', 'test3', 'test4']
+    }
     createUI() {
         const contentDiv = document.createElement('div')
         contentDiv.appendChild(simpleHeader('Step 1.1, list data', 'Add all the data to the list'))
@@ -140,7 +187,7 @@ class Step1_2 extends NormStep {
 
 class Step2 extends NormStep {
     loadFromStep(lastStepData) {
-        this.data = {title: '', data: lastStepData}
+        this.data = {title: 'Title', data: lastStepData}
     }
 
     createUI() {
@@ -172,11 +219,61 @@ class Step2 extends NormStep {
 // ==============STEP 3=================
 
 class Step3_1 extends NormStep {
+    loadFromStep(lastStepData) {
+        this.data = {
+            pk: '',
+            fks: [],
+            title: lastStepData.title,
+            data: lastStepData.data.filter(d => d.type === 'entity').map(d => d.name)
+        }
+    }
 
-}
+    setContent(contentDiv) {
+        contentDiv.innerHTML = ''
+        contentDiv.appendChild(simpleHeader('Step 3.1-3.2', 'Select the primary key and mark repeating groups'))
+        const table = simpleTable(this.data.title, this.data.data,
+            (name) => {
+                if (name === this.data.pk) {
+                    return '<u>' + name + '</u>'
+                }
+                return name
+            },
+            {
+                PK: {
+                    value: (name) => {
+                        return this.data.pk === name
+                    },
+                    onvalue: (name, value) => {
+                        if (value)
+                            this.data.pk = name
+                        else
+                            this.data.pk = ''
+                        this.setContent(contentDiv)
+                    }
+                },
+                FK: {
+                    value: (name) => {
+                        return this.data.fks.includes(name)
+                    },
+                    onvalue: (name, value) => {
+                        if (!this.data.fks.includes(name) && value) {
+                            this.data.fks.push(name)
+                        }
+                        else if (this.data.fks.includes(name) && !value) {
+                            this.data.fks.splice(this.data.fks.indexOf(name), 1)
+                        }
+                        this.setContent(contentDiv)
+                    }
+                }
+            })
+        contentDiv.appendChild(table)
+    }
 
-class Step3_2 extends NormStep {
-
+    createUI() {
+        const contentDiv = document.createElement('div')
+        this.setContent(contentDiv)
+        return contentDiv
+    }
 }
 
 class Step3_3 extends NormStep {
@@ -245,7 +342,6 @@ export function createStepList() {
         new Step1_2(),
         new Step2(),
         new Step3_1(),
-        new Step3_2(),
         new Step3_3(),
         new Step3_4(),
         new Step3_5(),
