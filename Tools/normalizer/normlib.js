@@ -15,13 +15,26 @@ function simpleHeader(title, description) {
  * @param data {string[]}
  * @param customFormatting {function(string): string}}
  * @param extras {{key:{value:function(string):boolean, onvalue:function(string, value)}}}
+ * @param renamable {boolean|function(string)}
  * @returns {HTMLTableElement}
  */
-function simpleTable(title, data, customFormatting=(i)=>i, extras={}) {
+function simpleTable(title, data, customFormatting=(i)=>i, extras={}, renamable=false) {
     const tel = document.createElement('table')
     const headerRow = document.createElement('tr')
     const headerText = document.createElement('th')
-    headerText.innerText = title
+    if (renamable) {
+        const textBox = document.createElement('input')
+        textBox.type = 'text'
+        textBox.value = title
+        textBox.addEventListener('keyup', () => {
+            textBox.value = textBox.value.toUpperCase()
+            renamable(textBox.value)
+        })
+        headerText.appendChild(textBox)
+    }
+    else {
+        headerText.innerText = title
+    }
     headerRow.appendChild(headerText)
     for (const extraName in extras) {
         const extraText = document.createElement('th')
@@ -120,7 +133,16 @@ class NormStep {
     /**
      * @returns {HTMLElement}
      */
-    createUI() {}
+    createUI() {
+        const contentDiv = document.createElement('div')
+        this.setContent(contentDiv)
+        return contentDiv
+    }
+
+    /**
+     * @param contentDiv {HTMLDivElement}
+     */
+    setContent(contentDiv) {}
 
     /**
      * @returns {string}
@@ -150,6 +172,7 @@ class Step1_1 extends NormStep {
 class Step1_2 extends NormStep {
 
     loadFromStep(lastStepData) {
+        lastStepData = JSON.parse(JSON.stringify(lastStepData))
         this.data = lastStepData.map(d => {return {name:d, type:'entity'}})
     }
 
@@ -187,7 +210,8 @@ class Step1_2 extends NormStep {
 
 class Step2 extends NormStep {
     loadFromStep(lastStepData) {
-        this.data = {title: 'Title', data: lastStepData}
+        lastStepData = JSON.parse(JSON.stringify(lastStepData))
+        this.data = {title: 'TITLE', data: lastStepData}
     }
 
     createUI() {
@@ -218,10 +242,11 @@ class Step2 extends NormStep {
 
 // ==============STEP 3=================
 
-class Step3_1 extends NormStep {
+class Step3_12 extends NormStep {
     loadFromStep(lastStepData) {
+        lastStepData = JSON.parse(JSON.stringify(lastStepData))
         this.data = {
-            pk: '',
+            pks: [],
             fks: [],
             title: lastStepData.title,
             data: lastStepData.data.filter(d => d.type === 'entity').map(d => d.name)
@@ -233,7 +258,7 @@ class Step3_1 extends NormStep {
         contentDiv.appendChild(simpleHeader('Step 3.1-3.2', 'Select the primary key and mark repeating groups'))
         const table = simpleTable(this.data.title, this.data.data,
             (name) => {
-                if (name === this.data.pk) {
+                if (this.data.pks.includes(name)) {
                     return '<u>' + name + '</u>'
                 }
                 return name
@@ -241,13 +266,15 @@ class Step3_1 extends NormStep {
             {
                 PK: {
                     value: (name) => {
-                        return this.data.pk === name
+                        return this.data.pks.includes(name)
                     },
                     onvalue: (name, value) => {
-                        if (value)
-                            this.data.pk = name
-                        else
-                            this.data.pk = ''
+                        if (!this.data.pks.includes(name) && value) {
+                            this.data.pks.push(name)
+                        }
+                        else if (this.data.pks.includes(name) && !value) {
+                            this.data.pks.splice(this.data.pks.indexOf(name), 1)
+                        }
                         this.setContent(contentDiv)
                     }
                 },
@@ -268,28 +295,61 @@ class Step3_1 extends NormStep {
             })
         contentDiv.appendChild(table)
     }
+}
 
-    createUI() {
-        const contentDiv = document.createElement('div')
-        this.setContent(contentDiv)
-        return contentDiv
+class Step3_3456 extends NormStep {
+    loadFromStep(lastStepData) {
+        lastStepData = JSON.parse(JSON.stringify(lastStepData))
+        this.data = [lastStepData]
+        if (lastStepData.pks.length === 0) {
+            this.data[0].data.unshift('id')
+            this.data[0].pks.unshift('id')
+        }
+        if (lastStepData.fks.length !== 0) {
+            this.data.push({
+                pks: [],
+                fks: [],
+                title: 'TITLE',
+                data: lastStepData.fks
+            })
+        }
+        this.data[0].data = this.data[0].data.filter(data => !this.data[0].fks.includes(data))
     }
-}
 
-class Step3_3 extends NormStep {
+    setContent(contentDiv) {
+        contentDiv.innerHTML = ''
+        contentDiv.appendChild(simpleHeader('Step 3.3-3.6', 'Mark the new primary key for the new tables. And give the new table a title.'))
 
-}
-
-class Step3_4 extends NormStep {
-
-}
-
-class Step3_5 extends NormStep {
-
-}
-
-class Step3_6 extends NormStep {
-
+        for (const table of this.data) {
+            contentDiv.appendChild(simpleTable(table.title, table.data,
+                (name) => {
+                    if (table.pks.includes(name)) {
+                        return '<u>' + name + '<u/>'
+                    }
+                    else return name
+                },
+                {
+                    PK: {
+                        value: (name) => {
+                            return table.pks.includes(name)
+                        },
+                        onvalue: (name, value) => {
+                            if (!table.pks.includes(name) && value) {
+                                table.pks.push(name)
+                            }
+                            else if (table.pks.includes(name) && !value) {
+                                table.pks.splice(table.pks.indexOf(name), 1)
+                            }
+                            this.setContent(contentDiv)
+                        }
+                    }
+                },
+                (newName) => {
+                    table.title = newName
+                }
+                ))
+        }
+    }
 }
 
 // ==============STEP 4=================
@@ -341,11 +401,8 @@ export function createStepList() {
         new Step1_1(),
         new Step1_2(),
         new Step2(),
-        new Step3_1(),
-        new Step3_3(),
-        new Step3_4(),
-        new Step3_5(),
-        new Step3_6(),
+        new Step3_12(),
+        new Step3_3456(),
         new Step4_1(),
         new Step4_2(),
         new Step4_3(),
