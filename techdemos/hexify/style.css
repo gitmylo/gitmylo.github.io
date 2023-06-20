@@ -1,0 +1,56 @@
+.threegrid {
+    display: grid;
+    grid-template-columns: 1fr 500px 300px;
+    grid-gap: 10px;
+    height: calc(100vh - 20px);
+    box-sizing: border-box;
+}
+
+textarea {
+    background: transparent;
+    border: 1px solid black;
+    border-radius: 10px;
+    resize: none;
+    color: white;
+    font-family: Consolas;
+}
+
+.left {
+    left: 0;
+    text-align: left;
+}
+
+.right {
+    right: 0;
+    text-align: right;
+}
+
+.middle {
+    text-align: center;
+}
+
+.pointers {
+    width: 500px;
+    padding: 0 30px;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 50%;
+    transform: translateY(50%);
+}
+
+input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+li {
+    user-select: text;
+    pointer-events: initial;
+    cursor: text;
+}
+
+ul {
+    max-height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+}

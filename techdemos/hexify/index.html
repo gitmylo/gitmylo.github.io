@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hexify by @gitmylo</title>
+  <link rel="stylesheet" href="/stylesheets/normalise.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="threegrid">
+    <textarea name="input" id="input" cols="30" rows="10"></textarea>
+    <div class="panel">
+      <div class="pointers">
+        <div class="middle">Load from url</div>
+        <input type="text" name="loadUrl" id="loadUrl" value="https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt">
+        <button id="loadfromurl">Load from url</button>
+        <button id="findmatches">Find hex matches</button>
+      </div>
+    </div>
+    <ul id="output">
+    </ul>
+  </div>
+<script src="script.js" type="module"></script>
+</body>
+</html>

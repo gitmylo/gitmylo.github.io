@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/gitmylo/gitmylo.github.io#readme",
   "dependencies": {
+    "pngjs": "^7.0.0",
     "sass": "^1.62.1"
   }
 }
