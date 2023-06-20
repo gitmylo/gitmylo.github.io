@@ -40,6 +40,14 @@ function oppositeHexChar(char) {
     return hexChars[hexChars.length - hexChars.indexOf(char) - 1]
 }
 
+function oppositeHexStrong(hex, add=0) {
+    const threshold = (16*hex.length*16)/4 + add
+    const totalHex = hex.split('').map(c => hexChars.indexOf(c)).map((n, i) => i%2===0?n*16:n).reduce((a, b) => a + b)
+    const count = Math.min(hex.length, 6)
+    const append = repeatChar('F', hex.length - count)
+    return (totalHex > threshold ? repeatChar('0', count) : repeatChar('F', count)) + append
+}
+
 function oppositeHex(hex) {
     hex = hex.toUpperCase().replace('#', '').trim()
     hex = hex.split('').map(o => oppositeHexChar(o)).join('')
@@ -58,7 +66,7 @@ findMatches.addEventListener('click', () => {
             const el = document.createElement('li')
             el.innerText = `#${validHex}`
             el.style.backgroundColor = `#${validHex}`
-            el.style.color = `#${oppositeHex(validHex)}`
+            el.style.color = `#${oppositeHexStrong(validHex, 16)}`
             output.appendChild(el)
         }
     }
