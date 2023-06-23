@@ -51,9 +51,9 @@ export class API {
      * @param output {HTMLInputElement}
      */
     static openAI(prompt, output) {
-        const endpoint = document.data.openaiendpoint
+        const endpoint = document.data.openaiendpoint !== '' ? document.data.openaiendpoint : 'https://api.openai.com/v1/chat/completions'
         const key = document.data.openaikey
-        const model = document.data.openaimodel
+        const model = document.data.openaimodel !== '' ? document.data.openaimodel : 'gpt-3.5-turbo'
 
         if (document.data.openaistreaming) {
             output.value = 'Starting streaming...';
