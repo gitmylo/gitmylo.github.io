@@ -1,0 +1,92 @@
+.mainpanel {
+    background: #3c3f41;
+
+    outline: 1px solid black;
+    border-radius: 25px;
+    position: relative;
+    padding: 10px;
+}
+
+accordion {
+    display: block;
+    outline: 1px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 20px 5px;
+}
+
+accordion-title {
+    display: block;
+    cursor: pointer;
+    user-select: none;
+}
+
+accordion-content {
+    display: none;
+    border-top: 1px solid black;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.visible {
+    display: block;
+}
+
+accordion-title:before {
+    content: '+ ';
+}
+
+accordion-title.open:before {
+    content: '– ';
+}
+
+dialog {
+    width: calc(max(500px, 50%));
+    max-height: 50%;
+    overflow-y: auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+
+    background: #3c3f41;
+    color: white;
+}
+
+input:not([type='checkbox']), select, textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input:not([type='checkbox']), select, textarea, button {
+    background: #3c3f41;
+    color: white;
+
+    outline: 1px solid black;
+    border: none;
+    padding: 5px;
+    border-radius: 10px;
+
+    margin-top: 5px;
+}
+
+button {
+    cursor: pointer;
+}
+
+#settingsButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+pre {
+    user-select: text;
+}
+
+pre[data-action] {
+    cursor: pointer;
+}
