@@ -90,11 +90,13 @@ export class API {
                                 output.value = `ERROR: ${jsonValue.error.message}`
                             }
                             reader.releaseLock()
+                            document.running = false
                             return
                         }
                         catch (e) {
                             output.value = `Something went wrong: ${e}`
                             reader.releaseLock()
+                            document.running = false
                             return
                         }
                     }
@@ -107,6 +109,7 @@ export class API {
                         if (data === 'data: [DONE]') {
                             dataDone = true;
                             reader.releaseLock()
+                            document.running = false
                             return;
                         }
                         data = data.substring(data.indexOf('{'), data.lastIndexOf('}')+1)
