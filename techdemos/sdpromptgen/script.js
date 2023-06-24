@@ -12,6 +12,7 @@ document.running = false
 setInterval(() => {
     genButton.disabled = document.running
     stopButton.disabled = !document.running
+    outputBox.classList.toggle('busy', document.running)
 }, 100)
 
 genButton.addEventListener('click', () => {

@@ -1,7 +1,7 @@
 .mainpanel {
     background: #3c3f41;
 
-    outline: 1px solid black;
+    outline: 1px solid white;
     border-radius: 25px;
     position: relative;
     padding: 10px;
@@ -9,7 +9,7 @@
 
 accordion {
     display: block;
-    outline: 1px solid black;
+    outline: 1px solid white;
     padding: 10px;
     border-radius: 10px;
     margin: 20px 5px;
@@ -23,7 +23,7 @@ accordion-title {
 
 accordion-content {
     display: none;
-    border-top: 1px solid black;
+    border-top: 1px solid white;
     margin-top: 10px;
     padding-top: 10px;
 }
@@ -44,7 +44,7 @@ dialog {
     width: calc(max(500px, 50%));
     max-height: 75%;
     overflow-y: auto;
-    border: 1px solid black;
+    border: 1px solid white;
     border-radius: 10px;
     padding: 10px;
 
@@ -66,12 +66,29 @@ input:not([type='checkbox']), select, textarea, button {
     background: #3c3f41;
     color: white;
 
-    outline: 1px solid black;
+    outline: 1px solid white;
     border: none;
     padding: 5px;
     border-radius: 10px;
 
     margin-top: 5px;
+}
+
+@keyframes busy {
+    0%, 100% {
+        outline-color: #c27e00;
+    }
+    50% {
+        outline-color: #ffa600;
+    }
+}
+
+#output {
+    transition: 300ms ease-out;
+}
+
+.busy {
+    animation: busy 1s ease-in-out infinite;
 }
 
 button {
