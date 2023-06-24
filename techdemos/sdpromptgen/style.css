@@ -42,7 +42,7 @@ accordion-title.open:before {
 
 dialog {
     width: calc(max(500px, 50%));
-    max-height: 50%;
+    max-height: 75%;
     overflow-y: auto;
     border: 1px solid black;
     border-radius: 10px;
@@ -50,6 +50,11 @@ dialog {
 
     background: #3c3f41;
     color: white;
+}
+
+dialog::backdrop {
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.1);
 }
 
 input:not([type='checkbox']), select, textarea {
@@ -73,6 +78,11 @@ button {
     cursor: pointer;
 }
 
+button:disabled {
+    cursor: default;
+    color: #b9b9b9;
+}
+
 #settingsButton {
     position: absolute;
     top: 10px;
@@ -89,4 +99,8 @@ pre {
 
 pre[data-action] {
     cursor: pointer;
+}
+
+a {
+    color: white;
 }

@@ -2,25 +2,29 @@ class Message {
     role
     content
 
-    constructor(content, role='user') {
+    constructor(content = '', role='user') {
         this.content = content
         this.role = role
     }
 
-    static SystemMessage(content) {
+    static SystemMessage(content = '') {
         return new Message(content, 'system')
     }
 
-    static UserMessage(content) {
+    static UserMessage(content = '') {
         return new Message(content, 'user')
     }
 
-    static AssistantMessage(content) {
+    static AssistantMessage(content = '') {
         return new Message(content, 'assistant')
     }
 
-    static CreateResponse(prompt) {
-        return [
+    /**
+     * @param prompt {string}
+     * @return {Message[]}
+     */
+    static CreateResponse(prompt='') {
+        const outList = [
             this.SystemMessage(`[System: You are an assistant who creates a prompt, a prompt is a description of an image which is later used to generate an image.
 Prompts are formatted like the following: "tag1, tag2, tag3" etc.
 Every tag must have a meaning, no nonsensical or made up words.
@@ -38,9 +42,10 @@ Your entire response must just be the tags, nothing more, nothing less. Tags ONL
             this.UserMessage('[EXAMPLE] I want a picture of a girl with pink hair and blue eyes.'),
             this.AssistantMessage('best quality, ultra detailed, 1girl, solo, standing, pink hair, long hair, blue eyes, loose hair, medium breasts, white shirt, necktie, smile, looking at viewer'),
             this.SystemMessage('[System: Provide your response within a single message, only containing the list of tags, separated by commas.]'),
-            this.AssistantMessage('Please provide some guidance, and I will provide a prompt for you!'),
-            this.UserMessage(prompt)
+            this.AssistantMessage('Please provide some guidance, and I will provide a prompt for you!')
         ]
+        if (prompt) outList.push(this.UserMessage(prompt))
+        return outList
     }
 }
 
@@ -110,6 +115,7 @@ export class API {
                     });
                     if (dataDone) break;
                 }
+                document.running = false
             })()
         }
         else {
@@ -132,9 +138,97 @@ export class API {
                     else {
                         output.value = r?.choices?.[0]?.message?.content ?? `Something went wrong, Response: ${r}`
                     }
+                    document.running = false
                 })
                 .catch((reason) => {
                     output.value = `Something went wrong: ${reason}`
+                    document.running = false
+                })
+        }
+    }
+
+    /**
+     * @param prompt {string}
+     * @param output {HTMLInputElement}
+     */
+    static oobabooga(prompt, output) {
+        const streaming = document.data.textgenwebuistreaming
+        let endpoint = document.data.textgenwebuiendpoint
+        let streamEndpoint = document.data.textgenwebuistreamendpoint
+        endpoint = endpoint !== '' ? endpoint + '/v1' : 'http://localhost:5000/api/v1'
+        streamEndpoint = streamEndpoint !== '' ? streamEndpoint : 'ws://localhost:5005/api/v1/stream'
+
+        const blockingEndpoint = endpoint + '/generate'
+
+        const chat = Message.CreateResponse(prompt)
+
+        let chatHist = chat.map(mes => `${mes.role}: ${mes.content}`)
+        chatHist = chatHist.join('\n') + '\nassistant: '
+
+        const reqdata = JSON.stringify({
+            prompt: chatHist,
+
+            max_new_tokens: 250,
+            stopping_strings: ['user:', 'assistant:', 'system:', 'User:', 'Assistant:', 'System:'],
+            add_bos_token: true,
+            truncation_length: 2048,
+            chat_prompt_size: 2048,
+            early_stopping: true,
+            skip_special_tokens: true,
+
+            do_sample: true
+        })
+
+        if (streaming) {
+            output.value = 'Starting streaming...';
+
+            const socket = new WebSocket(streamEndpoint)
+            let firstMessage = true
+            socket.onopen = () => {
+                socket.send(reqdata)
+            }
+            socket.onerror = (ev) => {
+                output.value = 'Something went wrong!'
+                console.log(ev)
+                document.running = false
+            }
+            socket.onmessage = (ev) => {
+                const data = JSON.parse(ev.data)
+                switch (data.event) {
+                    case 'text_stream':
+                        if (firstMessage) {
+                            firstMessage = false
+                            output.value = ''
+                        }
+                        output.value += data.text
+                        console.log(data.text)
+                        break
+                    case 'stream_end':
+                        socket.close()
+                        document.running = false
+                        return
+                }
+            }
+        }
+        else {
+            output.value = 'Generating prompt... Please wait.'
+            fetch(blockingEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: reqdata
+            })
+                .then(r => r.json())
+                .then(data => {
+                    output.value = data?.results?.[0]?.text ?? `Something went wrong!`
+                    console.log(data)
+                    document.running = false
+                })
+                .catch(e => {
+                    output.value = 'Something went wrong!'
+                    console.log(e)
+                    document.running = false
                 })
         }
     }
@@ -144,9 +238,30 @@ export class API {
      * @param output {HTMLInputElement}
      */
     static generate(prompt, output) {
+        try {
+            document.running = true
+            switch (document.data.provider) {
+                case 'openai':
+                    this.openAI(prompt, output)
+                    break
+                case 'oobabooga':
+                    this.oobabooga(prompt, output)
+                    break
+            }
+        }
+        catch {
+            document.running = false
+        }
+    }
+
+    static stopStream() {
+        document.running = false
         switch (document.data.provider) {
-            case 'openai':
-                this.openAI(prompt, output)
+            case 'oobabooga':
+                fetch(document.data.textgenwebuiendpoint + '/v1/stop-stream', {
+                    method: 'POST',
+                    body: '{}'
+                })
                 break
         }
     }

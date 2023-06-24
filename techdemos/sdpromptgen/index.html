@@ -16,39 +16,69 @@
         Select a generation provider
         <select data-databind="provider">
           <option value="openai">OpenAI</option>
+          <option value="oobabooga">Text generation webui (Oobabooga)</option>
         </select>
       </label>
       <accordion>
         <accordion-title>
-          OpenAI Settings
+          Text generation API
         </accordion-title>
         <accordion-content>
-          <p>
-            <label>
-              API key
-              <input type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" data-databind="openaikey">
-            </label>
-          </p>
-          <p>
-            <label>
-              API endpoint
-              <input type="text" placeholder="https://api.openai.com/v1/chat/completions" value="https://api.openai.com/v1/chat/completions" data-databind="openaiendpoint">
-            </label>
-          </p>
-          <p>
-            <button type="button" id="refreshopenaimodels">Refresh models</button>
-            <label>
-              Model
-              <select id="openaimodels" data-databind="openaimodel">
-
-              </select>
-            </label>
-          </p>
-          <p>
-            <label>
-              Streaming <input type="checkbox" data-databind="openaistreaming">
-            </label>
-          </p>
+          <accordion>
+            <accordion-title>
+              OpenAI Settings
+            </accordion-title>
+            <accordion-content>
+              <p>
+                <label>
+                  API key
+                  <input type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" data-databind="openaikey">
+                </label>
+              </p>
+              <p>
+                <label>
+                  API endpoint
+                  <input type="text" placeholder="https://api.openai.com/v1/chat/completions" value="https://api.openai.com/v1/chat/completions" data-databind="openaiendpoint">
+                </label>
+              </p>
+              <p>
+                <button type="button" id="refreshopenaimodels">Refresh models</button>
+                <label>
+                  Model
+                  <select id="openaimodels" data-databind="openaimodel"></select>
+                </label>
+              </p>
+              <p>
+                <label>
+                  Streaming <input type="checkbox" data-databind="openaistreaming">
+                </label>
+              </p>
+            </accordion-content>
+          </accordion>
+          <accordion>
+            <accordion-title>
+              Text-Generation-Webui (Oobabooga)
+            </accordion-title>
+            <accordion-content>
+              <p>
+                <label>
+                  API endpoint
+                  <input type="text" placeholder="http://localhost:5000/api" data-databind="textgenwebuiendpoint">
+                </label>
+              </p>
+              <p>
+                <label>
+                  Streaming API endpoint
+                  <input type="text" placeholder="ws://localhost:5005/api/v1/stream" data-databind="textgenwebuistreamendpoint">
+                </label>
+              </p>
+              <p>
+                <label>
+                  Streaming <input type="checkbox" data-databind="textgenwebuistreaming">
+                </label>
+              </p>
+            </accordion-content>
+          </accordion>
         </accordion-content>
       </accordion>
       <div>
@@ -112,6 +142,7 @@
       <textarea type="text" id="prompt"></textarea>
     </label>
     <button id="generateButton">Generate stable diffusion prompt</button>
+    <button id="stopStream">Stop streaming</button>
     <textarea type="text" id="output"></textarea>
   </div>
   <script type="module" src="lib/bindlib.js"></script>

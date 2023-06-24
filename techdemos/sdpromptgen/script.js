@@ -1,14 +1,24 @@
 import {API} from './lib/textgenapi.js'
 
 const genButton = document.getElementById('generateButton')
+const stopButton = document.getElementById('stopStream')
 const promptBox = document.getElementById('prompt')
 const outputBox = document.getElementById('output')
 
 const openaimodels = document.getElementById('openaimodels')
 
+document.running = false
+
+setInterval(() => {
+    genButton.disabled = document.running
+    stopButton.disabled = !document.running
+}, 100)
+
 genButton.addEventListener('click', () => {
     API.generate(promptBox.value, outputBox)
 })
+
+stopButton.addEventListener('click', API.stopStream)
 
 document.getElementById('refreshopenaimodels').addEventListener('click', () => {
     openaimodels.innerHTML = ''
@@ -34,3 +44,5 @@ document.getElementById('refreshopenaimodels').addEventListener('click', () => {
             })
     }
 })
+
+
