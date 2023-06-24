@@ -255,13 +255,13 @@ export class API {
     }
 
     static stopStream() {
-        document.running = false
         switch (document.data.provider) {
             case 'oobabooga':
                 fetch(document.data.textgenwebuiendpoint + '/v1/stop-stream', {
                     method: 'POST',
                     body: '{}'
                 })
+                document.running = false
                 break
         }
     }
