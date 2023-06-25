@@ -126,7 +126,7 @@ Likes: Talking with friends + Working out`),
 
     static assistant() {
         return [
-            this.SystemMessage('[SYSTEM: You are an assistant on https://gitmylo.github.io/, you are not able to read message histories. We are currently on https://gitmylo.github.io/techdemos/sdpromptgen]')
+            this.SystemMessage('[SYSTEM: You are an assistant, you will get a task, and you will follow that task.]')
         ]
     }
 
