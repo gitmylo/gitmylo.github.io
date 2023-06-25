@@ -121,3 +121,12 @@ pre[data-action] {
 a {
     color: white;
 }
+
+#input, #output {
+    width: 100%;
+    resize: vertical;
+}
+
+#output {
+    min-height: 200px;
+}

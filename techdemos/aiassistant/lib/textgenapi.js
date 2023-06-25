@@ -19,13 +19,9 @@ class Message {
         return new Message(content, 'assistant')
     }
 
-    /**
-     * @param prompt {string}
-     * @return {Message[]}
-     */
-    static CreateResponse(prompt='') {
-        const outList = [
-            this.SystemMessage(`[System: You are an assistant who creates a prompt, a prompt is a description of an image which is later used to generate an image.
+    static sdtags() {
+        return [
+            this.SystemMessage(`[SYSTEM: You are an assistant who creates a prompt, a prompt is a description of an image which is later used to generate an image.
 Prompts are formatted like the following: "tag1, tag2, tag3" etc.
 Every tag must have a meaning, no nonsensical or made up words.
 Extra guidance can be specified when the user gives tags, "[use detailed tags] a girl with blue hair".
@@ -37,13 +33,110 @@ example_tags = [{anime art/cartoon/photorealistic/3d render}, beautiful lighting
 DO NOT include "{" or "}" literally, replace them with a fitting word based on its content. For example, {color} could become green, blue or brown for eyes, but different colors for clothes.
 Your entire response must just be the tags, nothing more, nothing less. Tags ONLY.
 ]`),
-            this.SystemMessage('[System: Provide your response within a single message, only containing the list of tags, separated by commas.]'),
+            this.SystemMessage('[SYSTEM: Provide your response within a single message, only containing the list of tags, separated by commas.]'),
             this.AssistantMessage('Please provide some guidance, and I will provide a prompt for you!'),
             this.UserMessage('[EXAMPLE] I want a picture of a girl with pink hair and blue eyes.'),
             this.AssistantMessage('best quality, ultra detailed, 1girl, solo, standing, pink hair, long hair, blue eyes, loose hair, medium breasts, white shirt, necktie, smile, looking at viewer'),
-            this.SystemMessage('[System: Provide your response within a single message, only containing the list of tags, separated by commas.]'),
+            this.SystemMessage('[SYSTEM: Provide your response within a single message, only containing the list of tags, separated by commas.]'),
             this.AssistantMessage('Please provide some guidance, and I will provide a prompt for you!')
         ]
+    }
+
+    static charwpp() {
+        return [
+            this.SystemMessage(`[SYSTEM: You are an assistant who writes a character's description based on a description by a user.
+A character is written in a special format called W++, W++ is written like a programming language, similar to config files.
+W++ is basically a fake language to write down a character efficiently, so it can be understood by AI.
+Every field is optional, except for the "character" field. You can also make up new fields if relevant.
+
+Example W++ character, (A catgirl):
+\`\`\`W++
+[character("Sarah")
+{
+Age("19")
+Species("Half cat" + "Half human")
+Body("Female" + "178cm tall" + "5 Foot 8 inches tall" + "Human-like")
+Features("Fluffy black cat ears" + "Black cat tail with a white tip")
+Description("Sarah is a catgirl, who is homeless, and hungry." + "She has just seen you, and is begging for food")
+Personality("Sweet" + "Caring" + "Friendly" + "Easily scared")
+Likes("Being pet" + "Being cared for")
+Dislikes("Angry people" + "Loud sounds")
+}]
+\`\`\`
+
+When you create a character, do not include the "\`\`\`W++" or the "\`\`\`", this is only provided for this example.
+You need to create a character in this format. Based on the description given by the user in the user's next message.
+
+You must always create a character, come up with as many features as you can.]`),
+            this.AssistantMessage('Please provide what you want a character of, and I will provide W++ code for that character.'),
+            this.SystemMessage('[SYSTEM: Do not include "\`\`\`" in your response.'),
+            this.UserMessage('Surprise me, but with a generic character'),
+            this.AssistantMessage(`[Character("John Smith")
+{
+Age("25")
+Species("Human")
+Body("Male" + "180cm tall" + "5 Foot 11 inches tall" + "Muscular build")
+Features("Short brown hair" + "Green eyes")
+Description("John is a man who works out regularly and takes care of his body.")
+Personality("Outgoing" + "Confident" + "Ambitious" + "Kind-hearted")
+Likes("Talking with friends" + "Working out")
+}]`),
+            this.AssistantMessage('Please provide what you want a character of, and I will provide W++ code for that character.')
+        ]
+    }
+
+    static charlazysimple() {
+        return [
+            this.SystemMessage(`[SYSTEM: You are an assistant who writes a character's description based on a description by a user.
+A character is written in a special format called LazySimple, LazySimple is a simple format for describing a character.
+LazySimple is based on a simple description of key: value + value2. Where key is a property, and the values are used for the character.
+Every field is optional. You can also make up new fields if relevant.
+
+Example LazySimple character, (A catgirl):
+\`\`\`LS
+character: Sarah
+Age: 19
+Species: Half cat + Half human
+Body: Female + 178cm tall + 5 Foot 8 inches tall + Human-like
+Features: Fluffy black cat ears + Black cat tail with a white tip
+Description: Sarah is a catgirl, who is homeless, and hungry. + She has just seen you, and is begging for food
+Personality: Sweet + Caring + Friendly + Easily scared
+Likes: Being pet + Being cared for
+Dislikes: Angry people + Loud sounds
+\`\`\`
+
+When you create a character, do not include the "\`\`\`LS" or the "\`\`\`", this is only provided for this example.
+You need to create a character in this format. Based on the description given by the user in the user's next message.
+
+You must always create a character, come up with as many features as you can.]`),
+            this.AssistantMessage('Please provide what you want a character of, and I will provide LazySimple code for that character.'),
+            this.SystemMessage('[SYSTEM: Do not include "\`\`\`" in your response.'),
+            this.UserMessage('Surprise me, but with a generic character'),
+            this.AssistantMessage(`Name: John Smith
+Age: 25
+Species: Human
+Body: Male + 180cm tall + 5 Foot 11 inches tall + Muscular build
+Features: Short brown hair + Green eyes
+Description: John is a man who works out regularly and takes care of his body.
+Personality: Outgoing + Confident + Ambitious + Kind-hearted
+Likes: Talking with friends + Working out`),
+            this.AssistantMessage('Please provide what you want a character of, and I will provide LazySimple code for that character.')
+        ]
+    }
+
+    static assistant() {
+        return [
+            this.SystemMessage('[SYSTEM: You are an assistant on https://gitmylo.github.io/, you are not able to read message histories. We are currently on https://gitmylo.github.io/techdemos/sdpromptgen]')
+        ]
+    }
+
+    /**
+     * @param prompt {string}
+     * @return {Message[]}
+     */
+    static CreateResponse(prompt='') {
+        const template = document.data.prompttemplate
+        const outList = this[template]()
         if (prompt) outList.push(this.UserMessage(prompt))
         return outList
     }
