@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Github issue template creator by @GitMylo</title>
+    <link rel="stylesheet" href="/stylesheets/normalise.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="main">
+    <div id="name" data-type="string">Bug Report</div>
+    <div id="description" data-type="string">File a bug report</div>
+    <div id="title" data-type="string">[Bug]: </div>
+    <div id="labels" data-type="strlist">"bug", "triage"</div>
+    <div id="assignees" data-type="strlist">"octocat"</div>
+    <div id="body" data-type="body"></div>
+    <div id="create" data-type="create"></div>
+</div>
+<script src="jsyaml-browserify.js"></script>
+<script src="/scripts/markdownit-browserify.js"></script>
+<script src="script.js" type="module"></script>
+</body>
+</html>

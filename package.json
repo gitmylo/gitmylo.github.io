@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/gitmylo/gitmylo.github.io#readme",
   "dependencies": {
+    "browserify": "^17.0.0",
+    "js-yaml": "^4.1.0",
+    "markdown-it": "^13.0.1",
     "pngjs": "^7.0.0",
     "sass": "^1.62.1"
   }

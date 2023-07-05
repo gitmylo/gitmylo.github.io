@@ -1,0 +1,73 @@
+li.li {
+    width: fit-content;
+    padding: 10px;
+}
+li.li:hover {
+    text-decoration: line-through white;
+    color: red;
+}
+#add-button, .small-button {
+    width: 25px;
+    height: 25px;
+}
+.small {
+    width: 25px;
+}
+.add-div {
+    transition: 100ms ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.add-div:not(.small) {
+    width: 425px;
+}
+#add-button:before {
+    content: '-';
+}
+.small #add-button:before {
+    content: '+';
+}
+.control-buttons {
+    position: absolute;
+    right: 10px;
+    left: 10px;
+    top: 10px;
+}
+.control-buttons-b {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.field {
+    position: relative;
+    padding: 24px 10px 10px;
+    outline: 1px solid white;
+    border-radius: 10px;
+    min-height: 10px;
+    margin-bottom: 10px;
+}
+.field.show {
+    padding-top: 40px;
+}
+.field>.elem-content {
+    display: none;
+}
+.field.show>.elem-content {
+    display: block;
+}
+.invalid {
+    border: 1px solid red;
+}
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.noresize-x {
+    resize: vertical;
+    min-height: 200px;
+}
+.wide-input:not([type='checkbox']) {
+    width: 100%;
+    box-sizing: border-box;
+}
