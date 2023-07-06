@@ -183,7 +183,7 @@ class MarkDown extends Field {
         const inputBox = document.createElement('textarea')
         inputBox.classList.add('input', 'noresize-x', 'code')
         const previewBox = document.createElement('div')
-        const md = new markdownit()
+        const md = new markdownit('default', {html: true, xhtmlOut: true, linkify: true})
         inputBox.addEventListener('keyup', () => {
             previewBox.innerHTML = md.render(inputBox.value)
             this.attributes.value = inputBox.value
