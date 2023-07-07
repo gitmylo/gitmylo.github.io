@@ -184,8 +184,18 @@ class MarkDown extends Field {
         inputBox.classList.add('input', 'noresize-x', 'code')
         const previewBox = document.createElement('div')
         const md = new markdownit('default', {html: true, xhtmlOut: true, linkify: true})
+        const regex = /\$(.*?)(?<!\\)\$/g
         inputBox.addEventListener('keyup', () => {
-            previewBox.innerHTML = md.render(inputBox.value)
+            let outval = md.render(inputBox.value)
+            const matches = []
+            for (const match of outval.matchAll(regex)) {
+                console.log(match)
+                if (!matches.includes(match[1])) {
+                    matches.push(match[1])
+                    outval = outval.replaceAll(match[0], katex.renderToString(match[1], {throwOnError: false}))
+                }
+            }
+            previewBox.innerHTML = outval
             this.attributes.value = inputBox.value
         })
         contentDiv.appendChild(inputBox)

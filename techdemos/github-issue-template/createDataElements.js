@@ -11,6 +11,8 @@ class dataElement {
         const input = document.createElement('input')
         input.type = 'text'
 
+        console.log(data[id].value)
+        if (data[id].value != null) defaultValue = data[id].value
         data[id].value = defaultValue
         input.value = defaultValue
 
@@ -132,6 +134,14 @@ ${jsyaml.dump({assignees: data.assignees.value})}${jsyaml.dump({body: data.body.
         })
 
         element.appendChild(button)
+
+        const loadButton = document.createElement('button')
+
+        loadButton.innerText = 'Load from clipboard'
+
+        loadButton.addEventListener('click', createDataElements)
+
+        element.appendChild(loadButton)
     }
 }
 
