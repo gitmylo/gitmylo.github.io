@@ -189,7 +189,6 @@ class MarkDown extends Field {
             let outval = md.render(inputBox.value)
             const matches = []
             for (const match of outval.matchAll(regex)) {
-                console.log(match)
                 if (!matches.includes(match[1])) {
                     matches.push(match[1])
                     outval = outval.replaceAll(match[0], katex.renderToString(match[1], {throwOnError: false}))
