@@ -2,6 +2,7 @@ import {API} from './lib/textgenapi.js'
 
 const genButton = document.getElementById('generateButton')
 const stopButton = document.getElementById('stopStream')
+const sysBox = document.getElementById('sysprompt')
 const promptBox = document.getElementById('prompt')
 const outputBox = document.getElementById('output')
 
@@ -16,7 +17,7 @@ setInterval(() => {
 }, 100)
 
 genButton.addEventListener('click', () => {
-    API.generate(promptBox.value, outputBox)
+    API.generate(promptBox.value, sysBox.value, outputBox)
 })
 
 stopButton.addEventListener('click', API.stopStream)

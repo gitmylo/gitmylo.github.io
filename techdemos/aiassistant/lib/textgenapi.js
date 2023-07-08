@@ -50,7 +50,7 @@ W++ is basically a fake language to write down a character efficiently, so it ca
 Every field is optional, except for the "character" field. You can also make up new fields if relevant.
 
 Example W++ character, (A catgirl):
-\`\`\`W++
+---
 [character("Sarah")
 {
 Age("19")
@@ -62,15 +62,15 @@ Personality("Sweet" + "Caring" + "Friendly" + "Easily scared")
 Likes("Being pet" + "Being cared for")
 Dislikes("Angry people" + "Loud sounds")
 }]
-\`\`\`
+---
 
-When you create a character, do not include the "\`\`\`W++" or the "\`\`\`", this is only provided for this example.
+When you create a character, do not include the "---", this is only provided for this example.
 You need to create a character in this format. Based on the description given by the user in the user's next message.
 
 You must always create a character, come up with as many features as you can.]`),
             this.AssistantMessage('Please provide what you want a character of, and I will provide W++ code for that character.'),
-            this.SystemMessage('[SYSTEM: Do not include "\`\`\`" in your response.'),
-            this.UserMessage('Surprise me, but with a generic character'),
+            this.SystemMessage('[SYSTEM: Do not include "---" in your response.'),
+            this.UserMessage('[EXAMPLE] Surprise me, but with a generic character'),
             this.AssistantMessage(`[Character("John Smith")
 {
 Age("25")
@@ -93,7 +93,7 @@ LazySimple is based on a simple description of key: value + value2. Where key is
 Every field is optional. You can also make up new fields if relevant.
 
 Example LazySimple character, (A catgirl):
-\`\`\`LS
+---
 character: Sarah
 Age: 19
 Species: Half cat + Half human
@@ -103,15 +103,15 @@ Description: Sarah is a catgirl, who is homeless, and hungry. + She has just see
 Personality: Sweet + Caring + Friendly + Easily scared
 Likes: Being pet + Being cared for
 Dislikes: Angry people + Loud sounds
-\`\`\`
+---
 
-When you create a character, do not include the "\`\`\`LS" or the "\`\`\`", this is only provided for this example.
+When you create a character, do not include the "---", this is only provided for this example.
 You need to create a character in this format. Based on the description given by the user in the user's next message.
 
 You must always create a character, come up with as many features as you can.]`),
             this.AssistantMessage('Please provide what you want a character of, and I will provide LazySimple code for that character.'),
-            this.SystemMessage('[SYSTEM: Do not include "\`\`\`" in your response.'),
-            this.UserMessage('Surprise me, but with a generic character'),
+            this.SystemMessage('[SYSTEM: Do not include "---" in your response.'),
+            this.UserMessage('[EXAMPLE] Surprise me, but with a generic character'),
             this.AssistantMessage(`Name: John Smith
 Age: 25
 Species: Human
@@ -132,12 +132,15 @@ Likes: Talking with friends + Working out`),
 
     /**
      * @param prompt {string}
+     * @param sysmes {string}
      * @return {Message[]}
      */
-    static CreateResponse(prompt='') {
+    static CreateResponse(prompt='', sysmes='') {
         const template = document.data.prompttemplate
         const outList = this[template]()
+        if (sysmes) outList.push(this.SystemMessage(sysmes))
         if (prompt) outList.push(this.UserMessage(prompt))
+
         return outList
     }
 }
@@ -146,9 +149,10 @@ export class API {
 
     /**
      * @param prompt {string}
+     * @param sysmes {string}
      * @param output {HTMLInputElement}
      */
-    static openAI(prompt, output) {
+    static openAI(prompt, sysmes, output) {
         const endpoint = document.data.openaiendpoint !== '' ? document.data.openaiendpoint : 'https://api.openai.com/v1/chat/completions'
         const key = document.data.openaikey
         const model = document.data.openaimodel !== '' ? document.data.openaimodel : 'gpt-3.5-turbo'
@@ -165,7 +169,7 @@ export class API {
                     },
                     body: JSON.stringify({
                         model: model,
-                        messages: Message.CreateResponse(prompt),  // JSON.stringify should recursively stringify this message array
+                        messages: Message.CreateResponse(prompt, sysmes),  // JSON.stringify should recursively stringify this message array
                         stream: true
                     })
                 });
@@ -245,9 +249,10 @@ export class API {
 
     /**
      * @param prompt {string}
+     * @param sysmes {string}
      * @param output {HTMLInputElement}
      */
-    static oobabooga(prompt, output) {
+    static oobabooga(prompt, sysmes, output) {
         const streaming = document.data.textgenwebuistreaming
         let endpoint = document.data.textgenwebuiendpoint
         let streamEndpoint = document.data.textgenwebuistreamendpoint
@@ -256,7 +261,7 @@ export class API {
 
         const blockingEndpoint = endpoint + '/generate'
 
-        const chat = Message.CreateResponse(prompt)
+        const chat = Message.CreateResponse(prompt, sysmes)
 
         let chatHist = chat.map(mes => `${mes.role}: ${mes.content}`)
         chatHist = chatHist.join('\n') + '\nassistant: '
@@ -331,17 +336,18 @@ export class API {
 
     /**
      * @param prompt {string}
+     * @param sysmes {string}
      * @param output {HTMLInputElement}
      */
-    static generate(prompt, output) {
+    static generate(prompt, sysmes, output) {
         try {
             document.running = true
             switch (document.data.provider) {
                 case 'openai':
-                    this.openAI(prompt, output)
+                    this.openAI(prompt, sysmes, output)
                     break
                 case 'oobabooga':
-                    this.oobabooga(prompt, output)
+                    this.oobabooga(prompt, sysmes, output)
                     break
             }
         }
